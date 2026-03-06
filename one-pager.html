@@ -418,16 +418,13 @@
 <div id="home" class="section active">
   <div class="title-page">
     <h1>Robin Green</h1>
-    <div class="subtitle">Scientific Systems Builder for Experimental Biology</div>
-    <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 36px; max-width: 520px;">I build the infrastructure that turns biological designs into decision-grade experimental data.</p>
-
-    <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 10px;">Three layers of platform building</div>
+    <div class="subtitle">Synthetic Biology Platform Builder</div>
 
     <div class="title-card" onclick="showSection('gridsynth')">
       <div class="icon" style="background:#22c55e22;">🧬</div>
       <div>
         <div class="label">GridSynth</div>
-        <div class="desc">How molecules get built — production-scale DNA assembly from oligo pools</div>
+        <div class="desc">Scalable DNA assembly from oligo pools — 35× cheaper, 1,000 IgGs/week</div>
       </div>
     </div>
 
@@ -435,7 +432,7 @@
       <div class="icon" style="background:#3b82f622;">📐</div>
       <div>
         <div class="label">Antibody Discovery Data Model</div>
-        <div class="desc">How experimental lineage stays interpretable — 12-entity relational schema</div>
+        <div class="desc">Decision-grade data infrastructure for antibody pipelines</div>
       </div>
     </div>
 
@@ -443,12 +440,12 @@
       <div class="icon" style="background:#f9731622;">🧫</div>
       <div>
         <div class="label">PlateRegistry</div>
-        <div class="desc">How plate-level execution becomes analysis-ready — schema-enforced well metadata</div>
+        <div class="desc">Experimental data infrastructure at the well level</div>
       </div>
     </div>
 
     <div style="margin-top: 48px; color: var(--text-muted); font-size: 13px;">
-      <p style="color: var(--text-muted); font-size: 13px;">6 peer-reviewed publications (Nature, Science) · 1 issued US patent · Built production platforms at 2 organizations</p>
+      <p style="color: var(--text-muted); font-size: 13px;">6 peer-reviewed publications (Nature, Science) · 1 US patent (issued) · NSF GRFP Fellow · Shipped platforms at 2 organizations · Max capacity ~1,000 IgGs/week</p>
     </div>
   </div>
 </div>
@@ -457,7 +454,7 @@
 <div id="gridsynth" class="section">
   <span class="tag tag-green">Validated Method + Working Code</span>
   <h2 style="margin-top:12px;">GridSynth</h2>
-  <p class="muted">Production-scale DNA assembly from oligo pools, designed to reduce synthesis cost and eliminate bacterial cloning bottlenecks.</p>
+  <p class="muted">Scalable gene-to-protein production from oligo pools. No gene synthesis. No bacteria. No weekends.</p>
 
   <!-- Stats -->
   <div class="stat-grid">
@@ -478,9 +475,6 @@
       <div class="label">Median monomer (aSEC)</div>
     </div>
   </div>
-
-  <h3>What Was New</h3>
-  <p>GridSynth was not just pooled Golden Gate assembly. It combined experimentally validated seam architecture, pooled oligo synthesis, positional identity preservation across all plate operations, in vitro expression cassette assembly (no bacteria at any step), and a workflow designed from the start to be productionized — not just demonstrated. The result was a system that could run at 12 plates/week with a single operator.</p>
 
   <h3>The Problem</h3>
   <p>Combinatorial antibody libraries require hundreds to thousands of unique gene constructs. Traditional gene synthesis costs $100–300 per gene. Bacterial cloning adds days of hands-on work, contamination risk, and weekend incubations. At 1,000 constructs, you're looking at $100K+ in DNA cost alone.</p>
@@ -593,7 +587,7 @@
   <hr class="divider">
 
   <div class="callout">
-    <strong>Why this matters for AI-bio:</strong> Model output is only useful if constructs can be built and tested cheaply at scale. GridSynth reduces the cost and operational burden of turning designed sequences into experiments — from ~$150/gene to ~$4/gene, with no bacterial steps. The computational fragment design is itself a constraint-satisfaction problem amenable to ML optimization.
+    <strong>The AI angle:</strong> AI can design proteins all day long. GridSynth is how you actually build and test them at scale — for $4 per construct instead of $150. The computational fragment design is a constraint-satisfaction problem ready for ML optimization.
   </div>
 
   <p class="muted" style="font-size:13px; margin-top:24px;">Shipped at 2 organizations · Production-validated SOPs · Python notebook framework for reproducible pool design · 1 US patent issued (antibody-related)</p>
@@ -608,17 +602,7 @@
   <h3>The Problem</h3>
   <p>Antibody discovery generates data across dozens of systems: NGS, cloning, expression, purification, binding assays, functional assays, sequencing QC. Most organizations track this in disconnected spreadsheets. When it's time to make a lead selection decision, someone spends days manually joining data — and gets it wrong.</p>
 
-  <h3>Common Failure Modes</h3>
-  <ul class="feature-list">
-    <li><span class="check" style="color:var(--red);">✗</span> <span>Disconnected construct and batch history — no lineage from sequence to protein</span></li>
-    <li><span class="check" style="color:var(--red);">✗</span> <span>Assay results without material provenance — which lot, which purification?</span></li>
-    <li><span class="check" style="color:var(--red);">✗</span> <span>Lot artifacts misattributed to molecules — bad batch looks like bad candidate</span></li>
-    <li><span class="check" style="color:var(--red);">✗</span> <span>Spreadsheet joins that silently break lead selection — wrong data, wrong decision</span></li>
-    <li><span class="check" style="color:var(--red);">✗</span> <span>Cross-CRO drift becoming invisible — no structured way to compare external vs. internal data</span></li>
-  </ul>
-
   <h3>The Entity Graph</h3>
-  <p class="muted" style="font-size: 12px; margin-bottom: 8px;">Simplified view of the full 12-entity model</p>
   <div class="entity-graph">
     <div class="entity-node">
       <div class="e-icon" style="background:#3b82f622; color:var(--blue);">🔬</div>
@@ -687,24 +671,25 @@
 
 <!-- ==================== PLATEREGISTRY ==================== -->
 <div id="plateregistry" class="section">
-  <span class="tag tag-orange">Execution Layer</span>
+  <span class="tag tag-orange">Tool</span>
   <h2 style="margin-top:12px;">PlateRegistry</h2>
-  <p class="muted">The plate execution layer for experimental biology: schema-enforced well metadata that makes assay outputs reproducible and analysis-ready.</p>
+  <p class="muted">Experimental data infrastructure at the well level. Schema enforcement where reproducibility actually breaks down.</p>
 
   <h3>The Problem</h3>
   <p>A shocking amount of experimental irreproducibility starts at the plate map. Scientists track 96-well and 384-well layouts in ad hoc spreadsheets with inconsistent naming, no controlled vocabularies, and no link to upstream or downstream data. When a result looks wrong three weeks later, nobody can reconstruct what was actually in well B7.</p>
 
-  <h3>What PlateRegistry Enforces</h3>
+  <h3>What PlateRegistry Does</h3>
   <ul class="feature-list">
-    <li><span class="check">→</span> <span><strong>Stable plate and well identity</strong> — every well has a unique, persistent identifier linked to its source construct, batch, or sample</span></li>
-    <li><span class="check">→</span> <span><strong>Schema-enforced metadata</strong> — plate layouts require defined schemas with controlled vocabularies at the well level, not ad hoc column headers</span></li>
-    <li><span class="check">→</span> <span><strong>Reproducible joins</strong> — assay results map back to specific wells with full material provenance, not just plate IDs</span></li>
-    <li><span class="check">→</span> <span><strong>Rearray tracking</strong> — when plates get reformatted, the registry maintains the well-to-well mapping so nothing gets lost</span></li>
-    <li><span class="check">→</span> <span><strong>Structured exports</strong> — instrument-ready outputs that match what automation platforms and downstream analysis actually need</span></li>
+    <li><span class="check">→</span> <span><strong>Template builder</strong> — define plate layouts with enforced schemas and controlled vocabularies at the well level</span></li>
+    <li><span class="check">→</span> <span><strong>Plate map grid</strong> — visual 96/384-well grid view with per-well metadata, sample identity, and concentration</span></li>
+    <li><span class="check">→</span> <span><strong>Upstream linkage</strong> — every well traces back to its source construct, batch, or sample</span></li>
+    <li><span class="check">→</span> <span><strong>Downstream linkage</strong> — assay results map back to specific wells, not just plate IDs</span></li>
+    <li><span class="check">→</span> <span><strong>CSV export</strong> — instrument-ready outputs that match what automation platforms actually need</span></li>
+    <li><span class="check">→</span> <span><strong>No rearray confusion</strong> — when plates get reformatted, the registry tracks the mapping</span></li>
   </ul>
 
   <h3>Why This Matters for AI-Driven Biology</h3>
-  <p>ML models for protein engineering are only as good as their training data. If your plate maps are ambiguous, your assay annotations are wrong, and your training data is silently corrupted. PlateRegistry is the execution-layer infrastructure that makes AI biology actually work — by ensuring every data point traces back to a real, identified well.</p>
+  <p>ML models for protein engineering are only as good as their training data. If your plate maps are ambiguous, your assay annotations are wrong, and your training data is silently corrupted. PlateRegistry is the boring infrastructure that makes AI biology actually work.</p>
 
   <div class="callout">
     <strong>The principle:</strong> If you can't tell me exactly what was in well B7 six months ago, you don't have a data platform. You have a spreadsheet collection.
@@ -714,7 +699,7 @@
   <div style="display:flex; flex-direction:column; gap:8px; margin:16px 0;">
     <a href="https://github.com/rgreenbio/PlateRegistry" target="_blank" style="display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color 0.2s;">
       <span style="font-size:18px;">📦</span>
-      <span><strong style="color:var(--orange);">GitHub Repo</strong><br><span style="font-size:12px; color:var(--text-muted);">Register plates, define well-level schemas, edit via spreadsheet grid, export structured data</span></span>
+      <span><strong style="color:var(--orange);">GitHub Repo</strong><br><span style="font-size:12px; color:var(--text-muted);">Register plates, define schemas, edit via spreadsheet grid, visualize with heatmaps</span></span>
     </a>
   </div>
 
