@@ -392,6 +392,66 @@
     margin: 32px 0;
   }
 
+  /* --- QR TAKEAWAY --- */
+  .qr-takeaway {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 32px;
+  }
+
+  .qr-takeaway canvas {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: 6px;
+  }
+
+  .qr-takeaway .qr-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .qr-takeaway .qr-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .qr-takeaway .qr-helper {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .qr-takeaway .qr-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+
+  .qr-takeaway .qr-link:hover { opacity: 1; }
+
+  /* iPad landscape: slightly larger QR */
+  @media (min-width: 768px) {
+    .qr-takeaway canvas {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
   /* --- FOOTER --- */
   .footer {
     text-align: center;
@@ -447,6 +507,17 @@
     <div style="margin-top: 48px; color: var(--text-muted); font-size: 13px;">
       <p style="color: var(--text-muted); font-size: 13px;">6 peer-reviewed publications (Nature, Science) · 1 US patent (issued) · NSF GRFP Fellow · Shipped platforms at 2 organizations · Max capacity ~1,000 IgGs/week</p>
     </div>
+
+    <!-- QR Takeaway — scan to save CV + links -->
+    <div class="qr-takeaway">
+      <canvas id="qr-canvas"></canvas>
+      <div class="qr-text">
+        <div class="qr-label">Scan for CV + portfolio</div>
+        <div class="qr-helper">Open on your phone to keep Robin's CV, GitHub, and links.</div>
+        <a class="qr-link" id="qr-direct-link" href="#" target="_blank">Open links page →</a>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -724,6 +795,47 @@ function showSection(id) {
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+/* ============================================================
+   QR CODE TARGET URL
+   ────────────────────────────────────────────────────────────
+   Update this URL to change where the QR code points.
+   Options:
+     - A hosted links page:  "https://rgreenbio.com/links"
+     - A direct CV PDF:      "https://rgreenbio.com/static/Robin_Green_CV.pdf"
+     - A Linktree or similar: "https://linktr.ee/rgreenbio"
+   ============================================================ */
+const PORTFOLIO_QR_TARGET_URL = "https://rgreenbio.com/links";
+
+// Set the direct link href to match
+document.getElementById('qr-direct-link').href = PORTFOLIO_QR_TARGET_URL;
+</script>
+
+<!-- Minimal QR Code Generator (qr-creator, MIT license, ~4KB) loaded from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"></script>
+<script>
+// Generate QR code on the canvas with colors matching the dark theme
+document.addEventListener('DOMContentLoaded', function() {
+  // If CDN qr-creator loaded, use it
+  if (typeof QrCreator !== 'undefined') {
+    QrCreator.render({
+      text: PORTFOLIO_QR_TARGET_URL,
+      radius: 0.0,
+      ecLevel: 'M',
+      fill: '#e8e8e8',
+      background: '#141414',
+      size: 240  // render at 2x for crispness, CSS scales down
+    }, document.getElementById('qr-canvas'));
+  } else {
+    // Fallback: show a styled text link if CDN fails
+    var canvas = document.getElementById('qr-canvas');
+    canvas.style.display = 'none';
+    var fallback = document.createElement('div');
+    fallback.style.cssText = 'width:100px;height:100px;display:flex;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--text-muted);text-align:center;padding:8px;';
+    fallback.textContent = 'Visit link below';
+    canvas.parentNode.insertBefore(fallback, canvas);
+  }
+});
 </script>
 
 </body>

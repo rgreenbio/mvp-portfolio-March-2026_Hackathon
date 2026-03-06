@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robin Green — Links</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #4ade80;
+    --accent-dim: #22c55e33;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .link-card:hover {
+    border-color: var(--accent);
+    background: #1a1a1a;
+  }
+
+  .link-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: var(--accent-dim);
+  }
+
+  .link-label {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .link-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .footer-note {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Robin Green</h1>
+    <div class="subtitle">Synthetic Biology Platform Builder</div>
+  </div>
+
+  <!-- ============================================================
+       UPDATE THESE LINKS AS NEEDED
+       CV_PDF_URL: Direct link to your CV PDF
+       ============================================================ -->
+
+  <a class="link-card" href="https://rgreenbio.com/static/Robin_Green_CV.pdf" target="_blank">
+    <div class="link-icon">📄</div>
+    <div>
+      <div class="link-label">Download CV</div>
+      <div class="link-desc">PDF — full academic and industry CV</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://rgreenbio.com/" target="_blank">
+    <div class="link-icon">🌐</div>
+    <div>
+      <div class="link-label">Portfolio</div>
+      <div class="link-desc">rgreenbio.com — work, writing, case studies</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://github.com/rgreenbio" target="_blank">
+    <div class="link-icon">💻</div>
+    <div>
+      <div class="link-label">GitHub</div>
+      <div class="link-desc">Open-source tools and platform code</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://linkedin.com/in/robin-green-phd-166b8216" target="_blank">
+    <div class="link-icon">🔗</div>
+    <div>
+      <div class="link-label">LinkedIn</div>
+      <div class="link-desc">Professional profile and publications</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="mailto:robin@rgreenbio.com">
+    <div class="link-icon">✉️</div>
+    <div>
+      <div class="link-label">Email</div>
+      <div class="link-desc">robin@rgreenbio.com</div>
+    </div>
+  </a>
+
+  <div class="footer-note">
+    Robin Green · March 2026
+  </div>
+</div>
+
+</body>
+</html>
