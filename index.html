@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Robin Green — Platform Work</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --text-muted: #888;
+    --accent: #4ade80;
+    --accent-dim: #22c55e33;
+    --accent-bright: #86efac;
+    --blue: #60a5fa;
+    --orange: #fb923c;
+    --purple: #c084fc;
+    --red: #f87171;
+    --yellow: #fbbf24;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* --- NAV --- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+  }
+
+  .nav-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+  }
+
+  .nav-tab {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-tab.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .nav-tab:hover { color: var(--text); }
+
+  /* --- SECTIONS --- */
+  .section { display: none; padding: 24px 20px 60px; }
+  .section.active { display: block; }
+
+  /* --- TITLE PAGE --- */
+  .title-page {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .title-page h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .title-page .subtitle {
+    font-size: 18px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 48px;
+  }
+
+  .title-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .title-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .title-card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .title-card .label {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .title-card .desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* --- COMMON --- */
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    color: var(--accent-bright);
+  }
+
+  p { margin-bottom: 16px; color: var(--text); font-size: 15px; }
+  .muted { color: var(--text-muted); }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .tag-green { background: var(--accent-dim); color: var(--accent); }
+  .tag-blue { background: #3b82f622; color: var(--blue); }
+  .tag-orange { background: #f9731622; color: var(--orange); }
+
+  /* --- STAT GRID --- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .stat-card .number {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-card .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .green { color: var(--accent); }
+  .blue { color: var(--blue); }
+  .orange { color: var(--orange); }
+  .purple { color: var(--purple); }
+  .red { color: var(--red); }
+  .yellow { color: var(--yellow); }
+
+  /* --- FLOW DIAGRAM --- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 20px 0;
+  }
+
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .flow-arrow {
+    text-align: center;
+    color: var(--accent);
+    font-size: 20px;
+    padding: 4px 0;
+  }
+
+  .flow-step .step-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .flow-step .step-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .flow-step .step-detail {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* --- COMPARISON TABLE --- */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .compare-table th {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  .compare-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table .old { color: var(--red); }
+  .compare-table .new { color: var(--accent); }
+
+  /* --- ENTITY GRAPH --- */
+  .entity-graph {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 20px 0;
+  }
+
+  .entity-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .entity-node .e-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .entity-node .e-name {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .entity-node .e-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .entity-edge {
+    text-align: center;
+    font-size: 18px;
+    color: var(--text-muted);
+    padding: 2px 0;
+  }
+
+  /* --- BULLET LIST --- */
+  .feature-list {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .feature-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .feature-list li:last-child { border-bottom: none; }
+
+  .feature-list .check {
+    color: var(--accent);
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* --- CALLOUT --- */
+  .callout {
+    background: var(--accent-dim);
+    border: 1px solid #22c55e44;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 24px 0;
+    font-size: 15px;
+  }
+
+  .callout strong { color: var(--accent); }
+
+  /* --- FIGURES --- */
+  .figure {
+    margin: 24px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .figure img {
+    width: 100%;
+    display: block;
+  }
+
+  .figure .fig-caption {
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <div class="nav-title">Robin Green — Platform Work</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="showSection('home')">Home</div>
+    <div class="nav-tab" onclick="showSection('gridsynth')">GridSynth</div>
+    <div class="nav-tab" onclick="showSection('datamodel')">Data Model</div>
+    <div class="nav-tab" onclick="showSection('plateregistry')">PlateRegistry</div>
+  </div>
+</nav>
+
+<!-- ==================== HOME ==================== -->
+<div id="home" class="section active">
+  <div class="title-page">
+    <h1>Robin Green</h1>
+    <div class="subtitle">Synthetic Biology Platform Builder</div>
+
+    <div class="title-card" onclick="showSection('gridsynth')">
+      <div class="icon" style="background:#22c55e22;">🧬</div>
+      <div>
+        <div class="label">GridSynth</div>
+        <div class="desc">Scalable DNA assembly from oligo pools — 35× cheaper, 1,000 IgGs/week</div>
+      </div>
+    </div>
+
+    <div class="title-card" onclick="showSection('datamodel')">
+      <div class="icon" style="background:#3b82f622;">📐</div>
+      <div>
+        <div class="label">Antibody Discovery Data Model</div>
+        <div class="desc">Decision-grade data infrastructure for antibody pipelines</div>
+      </div>
+    </div>
+
+    <div class="title-card" onclick="showSection('plateregistry')">
+      <div class="icon" style="background:#f9731622;">🧫</div>
+      <div>
+        <div class="label">PlateRegistry</div>
+        <div class="desc">Experimental data infrastructure at the well level</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 48px; color: var(--text-muted); font-size: 13px;">
+      <p style="color: var(--text-muted); font-size: 13px;">6 peer-reviewed publications (Nature, Science) · 1 US patent (issued) · NSF GRFP Fellow · Shipped platforms at 2 organizations · Max capacity ~1,000 IgGs/week</p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GRIDSYNTH ==================== -->
+<div id="gridsynth" class="section">
+  <span class="tag tag-green">Validated Method + Working Code</span>
+  <h2 style="margin-top:12px;">GridSynth</h2>
+  <p class="muted">Scalable gene-to-protein production from oligo pools. No gene synthesis. No bacteria. No weekends.</p>
+
+  <!-- Stats -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="number green">~$4</div>
+      <div class="label">Per gene (oligo pool)</div>
+    </div>
+    <div class="stat-card">
+      <div class="number red">~$150</div>
+      <div class="label">Per gene (traditional)</div>
+    </div>
+    <div class="stat-card">
+      <div class="number green">1,000</div>
+      <div class="label">IgGs / week capacity</div>
+    </div>
+    <div class="stat-card">
+      <div class="number green">99.8%</div>
+      <div class="label">Median monomer (aSEC)</div>
+    </div>
+  </div>
+
+  <h3>The Problem</h3>
+  <p>Combinatorial antibody libraries require hundreds to thousands of unique gene constructs. Traditional gene synthesis costs $100–300 per gene. Bacterial cloning adds days of hands-on work, contamination risk, and weekend incubations. At 1,000 constructs, you're looking at $100K+ in DNA cost alone.</p>
+
+  <h3>The Insight</h3>
+  <p>Golden Gate assembly can be restructured so that genes are split at <strong>experimentally validated high-fidelity junction seams</strong>, synthesized as short fragments in a single oligo pool, and reassembled in vitro. One pool order. One production run. No bacteria.</p>
+
+  <h3>How It Works</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="step-label">Computational Design</div>
+      <div class="step-title">Python pipeline: sequence → fragments → pool</div>
+      <div class="step-detail">Codon optimize → screen for restriction sites → split at validated 4-bp seams → assign grid + clonal primers → pad to uniform length → output FASTA for Twist oligo pool order</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">Order</div>
+      <div class="step-title">Single oligo pool from Twist</div>
+      <div class="step-detail">12 × 96 proteins = 1,152 constructs. Total DNA cost: &lt;$5K. Arrives in ~2 weeks.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">Grid PCR</div>
+      <div class="step-title">Plate-specific amplification</div>
+      <div class="step-detail">Grid primers pull plate-specific fragments from the pool. 10 cycles Q5. One tube per plate×chain.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">Clonal PCR</div>
+      <div class="step-title">Well-specific amplification</div>
+      <div class="step-detail">96-well primer plates on Viaflow stamp individual variants. 35 cycles. No custom worklists — just stamp.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">BsaI Golden Gate</div>
+      <div class="step-title">Fragment → full-length insert</div>
+      <div class="step-detail">Validated seam overhangs direct scarless, ordered assembly. 35 thermocycles. Walk away.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">BsmBI Golden Gate</div>
+      <div class="step-title">Insert → expression cassette (TAP)</div>
+      <div class="step-detail">Cell-free cloning into linearized expression vectors. No bacteria. No miniprep. No contamination.</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="step-label">Output</div>
+      <div class="step-title">Transfection-ready TAPs</div>
+      <div class="step-detail">~3.2 kb HC / ~2.6 kb LC. QC by E-gel + Sanger + MS-TOF. Protein QC always matches DNA QC.</div>
+    </div>
+  </div>
+
+  <h3>What's Eliminated</h3>
+  <table class="compare-table">
+    <tr><th>Traditional</th><th>GridSynth</th></tr>
+    <tr><td class="old">Individual gene synthesis ($100–300/gene)</td><td class="new">Oligo pool (~$4/gene)</td></tr>
+    <tr><td class="old">Bacterial transformation</td><td class="new">Fully in vitro</td></tr>
+    <tr><td class="old">Colony picking + miniprep</td><td class="new">96-well stamping (Viaflow)</td></tr>
+    <tr><td class="old">Custom worklists + rearray</td><td class="new">Direct plate-mapped design</td></tr>
+    <tr><td class="old">Weekend incubations</td><td class="new">&lt;8 hours hands-on, no weekends</td></tr>
+    <tr><td class="old">Contamination risk</td><td class="new">Zero bacterial steps</td></tr>
+    <tr><td class="old">Days to weeks per batch</td><td class="new">12 plates/week throughput</td></tr>
+  </table>
+
+  <h3>The Stamp — Positional Identity</h3>
+  <p>GridSynth preserves positional identity end-to-end. The plate layout you design computationally is the same layout you PCR, assemble, and transfect. No rearray. No custom worklists. No Cherry-pick files. The 96-well primer plates are stamped with a multichannel — every plate is processed identically. This eliminates an entire class of errors that plague combinatorial production at scale.</p>
+
+  <div class="figure">
+    <img src="https://raw.githubusercontent.com/rgreenbio/rgreenbio/main/static/images/gridsynth-stamp-workflow.png" alt="GridSynth Stamp Workflow">
+    <div class="fig-caption"><strong>The Stamp.</strong> Positional identity preserved from computational design through transfection. Same well = same construct, every step.</div>
+  </div>
+
+  <h3>The Key Technical Innovation</h3>
+  <p>The junction seams are not computationally predicted — they are <strong>experimentally validated</strong> for high-fidelity Golden Gate assembly. The seam library is curated with Levenshtein-distance filtering (no near-duplicates, no palindromes, no reverse-complement conflicts). Multiple independent seam sets provide fallback coverage. A recursive splitting algorithm finds natural seam sites within each gene, ensuring every fragment is synthesizable and assembles correctly.</p>
+
+  <hr class="divider">
+
+  <h3>Production Results</h3>
+  <p>Data from ~600 unique IgG constructs across 3 production batches, demonstrating GridSynth's reliability at scale.</p>
+
+  <h3 style="color: var(--blue);">Expression Titers</h3>
+  <p><strong>351 of 580 constructs (61%)</strong> exceeded the 100 mg/L production threshold. Median titers were remarkably consistent across batches: 130, 144, and 143 mg/L — comparable to individually synthesized genes.</p>
+
+  <div class="figure">
+    <img src="https://raw.githubusercontent.com/rgreenbio/rgreenbio/main/static/images/gridsynth-titer-rank-order.png" alt="Titer Rank Order Plot">
+    <div class="fig-caption"><strong>Rank-order expression titers.</strong> 351/580 constructs above 100 mg/L threshold (dashed line). Oligo-pool-derived constructs perform comparably to individually cloned controls.</div>
+  </div>
+
+  <div class="figure">
+    <img src="https://raw.githubusercontent.com/rgreenbio/rgreenbio/main/static/images/gridsynth-batch-reproducibility.png" alt="Batch Reproducibility">
+    <div class="fig-caption"><strong>Batch reproducibility.</strong> Three independent production batches with median titers of 130, 144, and 143 mg/L. Consistent performance across runs.</div>
+  </div>
+
+  <h3 style="color: var(--purple);">Analytical SEC (Purity)</h3>
+  <p><strong>~88% of constructs exceeded 90% monomer</strong> by analytical SEC, with a median monomer fraction of <strong>99.8%</strong>. This confirms that in vitro assembly produces proteins that are properly folded and non-aggregated.</p>
+
+  <div class="figure">
+    <img src="https://raw.githubusercontent.com/rgreenbio/rgreenbio/main/static/images/gridsynth-asec-monomer.png" alt="aSEC Monomer Purity">
+    <div class="fig-caption"><strong>Analytical SEC monomer purity.</strong> Median 99.8% monomer fraction. ~88% of constructs exceed 90% monomer threshold.</div>
+  </div>
+
+  <h3 style="color: var(--orange);">Sanger Sequence QC</h3>
+  <p>Sanger sequencing confirmed <strong>99.5%+ median pairwise identity</strong> to designed sequences, with approximately 92% of constructs passing high-quality thresholds. DNA fidelity matches or exceeds standard gene synthesis.</p>
+
+  <div class="figure">
+    <img src="https://raw.githubusercontent.com/rgreenbio/rgreenbio/main/static/images/gridsynth-sanger-qc.png" alt="Sanger QC">
+    <div class="fig-caption"><strong>Sanger sequence fidelity.</strong> Representative chromatogram (top) and pairwise identity distribution (bottom). 99.5%+ median identity to design.</div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="callout">
+    <strong>The AI angle:</strong> AI can design proteins all day long. GridSynth is how you actually build and test them at scale — for $4 per construct instead of $150. The computational fragment design is a constraint-satisfaction problem ready for ML optimization.
+  </div>
+
+  <p class="muted" style="font-size:13px; margin-top:24px;">Shipped at 2 organizations · Production-validated SOPs · Python notebook framework for reproducible pool design · 1 US patent issued (antibody-related)</p>
+</div>
+
+<!-- ==================== DATA MODEL ==================== -->
+<div id="datamodel" class="section">
+  <span class="tag tag-blue">Architecture</span>
+  <h2 style="margin-top:12px;">Antibody Discovery Data Model</h2>
+  <p class="muted">A relational schema that turns messy experimental biology into decision-grade datasets.</p>
+
+  <h3>The Problem</h3>
+  <p>Antibody discovery generates data across dozens of systems: NGS, cloning, expression, purification, binding assays, functional assays, sequencing QC. Most organizations track this in disconnected spreadsheets. When it's time to make a lead selection decision, someone spends days manually joining data — and gets it wrong.</p>
+
+  <h3>The Entity Graph</h3>
+  <div class="entity-graph">
+    <div class="entity-node">
+      <div class="e-icon" style="background:#3b82f622; color:var(--blue);">🔬</div>
+      <div><div class="e-name">Discovery Campaign</div><div class="e-desc">Antigen, donor, sorting strategy</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#22c55e22; color:var(--accent);">🧬</div>
+      <div><div class="e-name">Sequence</div><div class="e-desc">V-gene, CDR3, paired HC/LC, NGS lineage</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#f9731622; color:var(--orange);">🧪</div>
+      <div><div class="e-name">Construct</div><div class="e-desc">Codon-optimized DNA, cloning strategy, vector</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#a855f722; color:var(--purple);">📦</div>
+      <div><div class="e-name">Production Batch</div><div class="e-desc">Transfection plate, yield, purification</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#eab30822; color:var(--yellow);">📊</div>
+      <div><div class="e-name">Assay Result</div><div class="e-desc">Binding, function, specificity, developability</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#ef444422; color:var(--red);">✅</div>
+      <div><div class="e-name">Decision</div><div class="e-desc">Lead selection, advancement, kill</div></div>
+    </div>
+  </div>
+
+  <h3>Why This Matters</h3>
+  <ul class="feature-list">
+    <li><span class="check">→</span> <span><strong>Full lineage tracing</strong> — every protein traces back through its construct, sequence, and discovery campaign</span></li>
+    <li><span class="check">→</span> <span><strong>Prevents duplicate work</strong> — know what you've already made and tested before you make it again</span></li>
+    <li><span class="check">→</span> <span><strong>Assay data is structured</strong> — not buried in spreadsheets that only one person understands</span></li>
+    <li><span class="check">→</span> <span><strong>Decisions are auditable</strong> — why was this lead advanced? What data supported it?</span></li>
+    <li><span class="check">→</span> <span><strong>ML-ready</strong> — structured relational data feeds directly into predictive models for candidate selection</span></li>
+    <li><span class="check">→</span> <span><strong>Cross-campaign learning</strong> — patterns from one campaign inform the next</span></li>
+    <li><span class="check">→</span> <span><strong>QC gates are enforced</strong> — protein that fails DNA QC doesn't advance to assay</span></li>
+  </ul>
+
+  <div class="callout">
+    <strong>The operating principle:</strong> If your data model doesn't enforce the relationship between sequence, construct, batch, and assay result, then your lead selection is based on vibes, not evidence.
+  </div>
+
+  <h3>Explore</h3>
+  <div style="display:flex; flex-direction:column; gap:8px; margin:16px 0;">
+    <a href="https://github.com/rgreenbio/ab-discovery-data-model" target="_blank" style="display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color 0.2s;">
+      <span style="font-size:18px;">📦</span>
+      <span><strong style="color:var(--blue);">GitHub Repo</strong><br><span style="font-size:12px; color:var(--text-muted);">Schema YAML, seed data, 7-story demo case with SQL queries</span></span>
+    </a>
+    <a href="https://www.notion.so/31b21485c7ef8159863edfd28fd64366" target="_blank" style="display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color 0.2s;">
+      <span style="font-size:18px;">📋</span>
+      <span><strong style="color:var(--blue);">Notion Wiki</strong><br><span style="font-size:12px; color:var(--text-muted);">Live 12-entity data model with interconnected databases</span></span>
+    </a>
+    <a href="https://rgreenbio.com/work/decision-grade-antibody-data-model/" target="_blank" style="display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color 0.2s;">
+      <span style="font-size:18px;">🌐</span>
+      <span><strong style="color:var(--blue);">Website</strong><br><span style="font-size:12px; color:var(--text-muted);">Full writeup with interactive entity diagram</span></span>
+    </a>
+  </div>
+
+  <p class="muted" style="font-size:13px; margin-top:24px;">Designed and implemented across Benchling, internal databases, and custom tooling · Supports NGS, cloning, expression, QC, and assay data integration</p>
+</div>
+
+<!-- ==================== PLATEREGISTRY ==================== -->
+<div id="plateregistry" class="section">
+  <span class="tag tag-orange">Tool</span>
+  <h2 style="margin-top:12px;">PlateRegistry</h2>
+  <p class="muted">Experimental data infrastructure at the well level. Schema enforcement where reproducibility actually breaks down.</p>
+
+  <h3>The Problem</h3>
+  <p>A shocking amount of experimental irreproducibility starts at the plate map. Scientists track 96-well and 384-well layouts in ad hoc spreadsheets with inconsistent naming, no controlled vocabularies, and no link to upstream or downstream data. When a result looks wrong three weeks later, nobody can reconstruct what was actually in well B7.</p>
+
+  <h3>What PlateRegistry Does</h3>
+  <ul class="feature-list">
+    <li><span class="check">→</span> <span><strong>Template builder</strong> — define plate layouts with enforced schemas and controlled vocabularies at the well level</span></li>
+    <li><span class="check">→</span> <span><strong>Plate map grid</strong> — visual 96/384-well grid view with per-well metadata, sample identity, and concentration</span></li>
+    <li><span class="check">→</span> <span><strong>Upstream linkage</strong> — every well traces back to its source construct, batch, or sample</span></li>
+    <li><span class="check">→</span> <span><strong>Downstream linkage</strong> — assay results map back to specific wells, not just plate IDs</span></li>
+    <li><span class="check">→</span> <span><strong>CSV export</strong> — instrument-ready outputs that match what automation platforms actually need</span></li>
+    <li><span class="check">→</span> <span><strong>No rearray confusion</strong> — when plates get reformatted, the registry tracks the mapping</span></li>
+  </ul>
+
+  <h3>Why This Matters for AI-Driven Biology</h3>
+  <p>ML models for protein engineering are only as good as their training data. If your plate maps are ambiguous, your assay annotations are wrong, and your training data is silently corrupted. PlateRegistry is the boring infrastructure that makes AI biology actually work.</p>
+
+  <div class="callout">
+    <strong>The principle:</strong> If you can't tell me exactly what was in well B7 six months ago, you don't have a data platform. You have a spreadsheet collection.
+  </div>
+
+  <h3>Explore</h3>
+  <div style="display:flex; flex-direction:column; gap:8px; margin:16px 0;">
+    <a href="https://github.com/rgreenbio/PlateRegistry" target="_blank" style="display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px 16px; text-decoration:none; color:var(--text); transition:border-color 0.2s;">
+      <span style="font-size:18px;">📦</span>
+      <span><strong style="color:var(--orange);">GitHub Repo</strong><br><span style="font-size:12px; color:var(--text-muted);">Register plates, define schemas, edit via spreadsheet grid, visualize with heatmaps</span></span>
+    </a>
+  </div>
+
+  <p class="muted" style="font-size:13px; margin-top:24px;">Supports high-throughput antibody production, screening, and QC workflows · Designed for integration with Benchling, LIMS, and automation systems</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Robin Green · robingreen525@gmail.com · March 2026
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  const tabs = document.querySelectorAll('.nav-tab');
+  const names = ['home', 'gridsynth', 'datamodel', 'plateregistry'];
+  const idx = names.indexOf(id);
+  if (idx >= 0) tabs[idx].classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
