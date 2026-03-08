@@ -9,511 +9,382 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-        }
-        .scrollable-grid {
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        .well-circle {
-            cursor: pointer;
-            transition: opacity 0.15s, filter 0.15s;
-        }
-        .well-circle:hover {
-            filter: brightness(1.15);
-            opacity: 0.95;
-        }
-        .well-circle-active {
-            filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
-            stroke: #2563eb;
-            stroke-width: 2;
-        }
-        .tooltip {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            z-index: 50;
-            pointer-events: none;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        .gradient-bar {
-            height: 20px;
-            background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899, #f87171);
-            border-radius: 4px;
-        }
-        @media (max-width: 768px) {
-            .tab-content {
-                padding: 16px 12px;
-            }
-            .plate-grid {
-                max-width: 100%;
-            }
-        }
-        .data-table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        .data-table th {
-            background-color: #f3f4f6;
-            padding: 10px 8px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 12px;
-            color: #374151;
-            border-bottom: 2px solid #e5e7eb;
-            position: sticky;
-            top: 0;
-        }
-        .data-table td {
-            padding: 8px;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 13px;
-            color: #374151;
-        }
-        .data-table tr:hover {
-            background-color: #f9fafb;
-        }
-        .cell-numeric {
-            font-family: 'Monaco', 'Courier New', monospace;
-            text-align: right;
-        }
-        .cell-boolean-true {
-            color: #059669;
-            font-weight: 500;
-        }
-        .cell-boolean-false {
-            color: #dc2626;
-            font-weight: 500;
-        }
-        .schema-item {
-            background: #f9fafb;
-            border-left: 3px solid #3b82f6;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 4px;
-        }
-        .type-badge {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 3px;
-            margin-left: 8px;
-        }
-        .type-string {
-            background-color: #dbeafe;
-            color: #0c4a6e;
-        }
-        .type-number {
-            background-color: #dcfce7;
-            color: #0f4c1f;
-        }
-        .type-boolean {
-            background-color: #fce7f3;
-            color: #500724;
-        }
-        .type-date {
-            background-color: #fef3c7;
-            color: #4f2d11;
-        }
-        .type-categorical {
-            background-color: #f3e8ff;
-            color: #4c0519;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; }
+        .well-circle { cursor: pointer; transition: opacity 0.15s, filter 0.15s; }
+        .well-circle:hover { filter: brightness(1.15); opacity: 0.95; }
+        .well-circle-active { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8)); stroke: #2563eb; stroke-width: 2; }
+        .gradient-bar { height: 20px; background: linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899, #f87171); border-radius: 4px; }
+        .data-table { border-collapse: collapse; width: 100%; }
+        .data-table th { background-color: #f3f4f6; padding: 10px 8px; text-align: left; font-weight: 600; font-size: 12px; color: #374151; border-bottom: 2px solid #e5e7eb; position: sticky; top: 0; }
+        .data-table td { padding: 8px; border-bottom: 1px solid #e5e7eb; font-size: 13px; color: #374151; }
+        .data-table tr:hover { background-color: #f9fafb; }
+        .cell-numeric { font-family: 'Monaco', 'Courier New', monospace; text-align: right; }
+        .cell-boolean-true { color: #059669; font-weight: 500; }
+        .cell-boolean-false { color: #dc2626; font-weight: 500; }
+        .schema-item { background: #f9fafb; border-left: 3px solid #3b82f6; padding: 12px; margin: 8px 0; border-radius: 4px; }
+        .type-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; margin-left: 8px; }
+        .type-string { background-color: #dbeafe; color: #0c4a6e; }
+        .type-number { background-color: #dcfce7; color: #0f4c1f; }
+        .type-boolean { background-color: #fce7f3; color: #500724; }
+        .type-categorical { background-color: #f3e8ff; color: #4c0519; }
+        .plate-card { cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .plate-card:hover { border-color: #93c5fd; background-color: #eff6ff; }
+        .plate-card.active { border-color: #3b82f6; background-color: #eff6ff; }
+        .plate-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-96 { background: #dbeafe; color: #1e40af; }
+        .badge-384 { background: #f3e8ff; color: #6b21a8; }
+        @media (max-width: 768px) { .plate-grid { max-width: 100%; } }
     </style>
 </head>
 <body class="bg-white text-gray-900">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useMemo, useRef, useEffect } = React;
+        const { useState, useMemo } = React;
 
         // ============================================================================
-        // DATA GENERATION: Hill Equation dose-response
+        // PLATE ID PREFIX — shared across all plates
         // ============================================================================
-        const calculateMFISignal = (concentration, maxMfi, ec50, hillCoefficient, background, noise) => {
-            const signal = (maxMfi * Math.pow(concentration, hillCoefficient)) /
-                          (Math.pow(ec50, hillCoefficient) + Math.pow(concentration, hillCoefficient));
-            const noiseValue = (Math.random() - 0.5) * noise;
-            return Math.max(background, signal + background + noiseValue);
+        const PLATE_PREFIX = 'PRG';
+
+        // ============================================================================
+        // TEMPLATE DEFINITIONS
+        // ============================================================================
+        const templates = {
+            'on-cell-binding': {
+                id: 'tmpl-on-cell-binding',
+                name: 'On-Cell Binding Assay',
+                format: 96,
+                rows: 8, cols: 12,
+                description: 'Dose-response assay for antibody binding to cell surface targets. 8 antibodies × 12-point serial dilution.',
+                columns: [
+                    { name: 'Antibody ID', key: 'antibodyId', type: 'string', required: true },
+                    { name: 'Sample Type', key: 'sampleType', type: 'categorical', required: true, vocab: ['Monoclonal', 'Polyclonal', 'Chimeric', 'Humanized'] },
+                    { name: 'Concentration (nM)', key: 'concentrationNm', type: 'number', required: true },
+                    { name: 'Species', key: 'species', type: 'categorical', required: true, vocab: ['Mouse', 'Rabbit', 'Human', 'Goat'] },
+                    { name: 'Cell Line', key: 'cellLine', type: 'categorical', required: true, vocab: ['CHO-hEGFR', 'HEK293', 'HeLa', 'NIH3T3'] },
+                    { name: 'MFI Signal', key: 'mfiSignal', type: 'number', required: true },
+                    { name: 'Percent Binding', key: 'percentBinding', type: 'number', required: true },
+                    { name: 'Pass/Fail', key: 'passFailStatus', type: 'categorical', required: true, vocab: ['PASS', 'FAIL'] },
+                ],
+            },
+            'transfection': {
+                id: 'tmpl-transfection-96',
+                name: 'IgG Transfection Plate',
+                format: 96,
+                rows: 8, cols: 12,
+                description: 'Transient transfection plate for IgG expression. Each well = one HC/LC pair co-transfected in CHO or HEK cells.',
+                columns: [
+                    { name: 'Construct ID', key: 'constructId', type: 'string', required: true },
+                    { name: 'HC Clone', key: 'hcClone', type: 'string', required: true },
+                    { name: 'LC Clone', key: 'lcClone', type: 'string', required: true },
+                    { name: 'Vector', key: 'vector', type: 'categorical', required: true, vocab: ['pTT5-HC', 'pcDNA3.4', 'pCEP4'] },
+                    { name: 'DNA (µg)', key: 'dnaUg', type: 'number', required: true },
+                    { name: 'Cell Count (×10⁶)', key: 'cellCount', type: 'number', required: true },
+                    { name: 'Viability (%)', key: 'viability', type: 'number', required: true },
+                    { name: 'Titer (mg/L)', key: 'titerMgL', type: 'number', required: true },
+                    { name: 'QC Status', key: 'qcStatus', type: 'categorical', required: true, vocab: ['PASS', 'LOW_TITER', 'LOW_VIABILITY', 'FAILED'] },
+                ],
+            },
+            'oligo-library': {
+                id: 'tmpl-oligo-384',
+                name: 'Oligo Library Plate',
+                format: 384,
+                rows: 16, cols: 24,
+                description: 'Digital compound plate for pooled oligo synthesis. 384 wells × unique oligo fragments for GridSynth assembly.',
+                columns: [
+                    { name: 'Oligo ID', key: 'oligoId', type: 'string', required: true },
+                    { name: 'Pool ID', key: 'poolId', type: 'string', required: true },
+                    { name: 'Target Gene', key: 'targetGene', type: 'string', required: true },
+                    { name: 'Fragment', key: 'fragment', type: 'categorical', required: true, vocab: ['F1', 'F2', 'F3', 'F4'] },
+                    { name: 'Length (nt)', key: 'lengthNt', type: 'number', required: true },
+                    { name: 'Tm (°C)', key: 'tmC', type: 'number', required: true },
+                    { name: 'GC (%)', key: 'gcPercent', type: 'number', required: true },
+                    { name: 'Synthesis Status', key: 'synthStatus', type: 'categorical', required: true, vocab: ['READY', 'SYNTHESIZED', 'QC_PASS', 'QC_FAIL'] },
+                ],
+            },
         };
 
-        const generatePlateData = () => {
-            const antibodies = ['AB-001', 'AB-002', 'AB-003', 'AB-004', 'AB-005', 'AB-006', 'AB-007', 'AB-008'];
-            const sampleTypes = ['Monoclonal', 'Polyclonal', 'Chimeric', 'Humanized'];
-            const species = ['Mouse', 'Rabbit', 'Human', 'Goat'];
-            const cellLines = ['CHO-hEGFR', 'HEK293', 'HeLa', 'NIH3T3'];
+        // ============================================================================
+        // DATA GENERATORS
+        // ============================================================================
+        const ROW_LABELS_96 = ['A','B','C','D','E','F','G','H'];
+        const ROW_LABELS_384 = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
 
-            // Antibody parameters (EC50, max MFI, Hill coefficient)
-            const antibodyParams = {
-                'AB-001': { ec50: 50, maxMfi: 5000, hill: 1.2 },
-                'AB-002': { ec50: 30, maxMfi: 6500, hill: 1.1 },
-                'AB-003': { ec50: 75, maxMfi: 4200, hill: 1.3 },
-                'AB-004': { ec50: 45, maxMfi: 5500, hill: 1.15 },
-                'AB-005': { ec50: 100, maxMfi: 3000, hill: 0.95 },
-                'AB-006': { ec50: 35, maxMfi: 7200, hill: 1.25 },
-                'AB-007': { ec50: 2, maxMfi: 8000, hill: 1.4 },
-                'AB-008': { ec50: 500, maxMfi: 1500, hill: 0.8 },
+        const rand = (min, max) => min + Math.random() * (max - min);
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        const generateBindingPlate = (seed) => {
+            const antibodies = ['AB-001','AB-002','AB-003','AB-004','AB-005','AB-006','AB-007','AB-008'];
+            const sampleTypes = ['Monoclonal','Polyclonal','Chimeric','Humanized'];
+            const species = ['Mouse','Rabbit','Human','Goat'];
+            const cellLines = ['CHO-hEGFR','HEK293','HeLa','NIH3T3'];
+            const params = {
+                'AB-001':{ec50:50,max:5000,hill:1.2},'AB-002':{ec50:30,max:6500,hill:1.1},
+                'AB-003':{ec50:75,max:4200,hill:1.3},'AB-004':{ec50:45,max:5500,hill:1.15},
+                'AB-005':{ec50:100,max:3000,hill:0.95},'AB-006':{ec50:35,max:7200,hill:1.25},
+                'AB-007':{ec50:2,max:8000,hill:1.4},'AB-008':{ec50:500,max:1500,hill:0.8},
             };
-
-            // Serial dilution: 1000 nM down to ~0.006 nM (3-fold)
-            const concentrations = [1000, 333.3, 111.1, 37.04, 12.35, 4.115, 1.372, 0.457, 0.152, 0.051, 0.017, 0.006];
-            const background = 200;
-            const noise = 100;
-
+            const concs = [1000,333.3,111.1,37.04,12.35,4.115,1.372,0.457,0.152,0.051,0.017,0.006];
+            const bg = 200 + seed * 10;
             const wells = [];
-            const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-
-            for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
-                const row = rows[rowIdx];
-                const antibodyId = antibodies[rowIdx];
-                const params = antibodyParams[antibodyId];
-
-                for (let colIdx = 0; colIdx < concentrations.length; colIdx++) {
-                    const col = colIdx + 1;
-                    const concentration = concentrations[colIdx];
-                    const wellId = `${row}${col}`;
-
-                    const mfiSignal = calculateMFISignal(
-                        concentration,
-                        params.maxMfi,
-                        params.ec50,
-                        params.hill,
-                        background,
-                        noise
-                    );
-
-                    const maxBackground = params.maxMfi - background;
-                    const percentBinding = ((mfiSignal - background) / maxBackground) * 100;
-
+            for (let r = 0; r < 8; r++) {
+                const ab = antibodies[r];
+                const p = params[ab];
+                for (let c = 0; c < 12; c++) {
+                    const conc = concs[c];
+                    const signal = (p.max * Math.pow(conc, p.hill)) / (Math.pow(p.ec50, p.hill) + Math.pow(conc, p.hill));
+                    const mfi = Math.max(bg, Math.round(signal + bg + (Math.random()-0.5)*100));
+                    const pctBind = Math.round(((mfi - bg) / (p.max - bg)) * 1000) / 10;
                     wells.push({
-                        wellId,
-                        row,
-                        col,
-                        antibodyId,
-                        sampleType: sampleTypes[rowIdx % sampleTypes.length],
-                        concentrationNm: concentration,
-                        species: species[rowIdx % species.length],
-                        cellLine: cellLines[rowIdx % cellLines.length],
-                        mfiSignal: Math.round(mfiSignal),
-                        percentBinding: Math.round(percentBinding * 10) / 10,
-                        passFailStatus: percentBinding > 10 ? 'PASS' : 'FAIL',
+                        wellId: `${ROW_LABELS_96[r]}${c+1}`, row: ROW_LABELS_96[r], col: c+1,
+                        antibodyId: ab, sampleType: sampleTypes[r%4], concentrationNm: conc,
+                        species: species[r%4], cellLine: cellLines[r%4],
+                        mfiSignal: mfi, percentBinding: pctBind,
+                        passFailStatus: pctBind > 10 ? 'PASS' : 'FAIL',
                     });
                 }
             }
+            return wells;
+        };
 
+        const generateTransfectionPlate = (seed) => {
+            const vectors = ['pTT5-HC','pcDNA3.4','pCEP4'];
+            const wells = [];
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 12; c++) {
+                    const idx = r * 12 + c;
+                    const constructNum = String(idx + 1 + seed * 96).padStart(4,'0');
+                    const viability = Math.round(rand(75, 98) * 10) / 10;
+                    const titer = Math.round(rand(20, 280) * 10) / 10;
+                    let qc = 'PASS';
+                    if (titer < 50) qc = 'LOW_TITER';
+                    if (viability < 80) qc = 'LOW_VIABILITY';
+                    if (titer < 30 && viability < 82) qc = 'FAILED';
+
+                    wells.push({
+                        wellId: `${ROW_LABELS_96[r]}${c+1}`, row: ROW_LABELS_96[r], col: c+1,
+                        constructId: `GEN-${constructNum}`,
+                        hcClone: `HC-${String(Math.floor(idx/2)+1+seed*48).padStart(3,'0')}`,
+                        lcClone: `LC-${String((idx%12)+1).padStart(3,'0')}`,
+                        vector: vectors[idx % 3],
+                        dnaUg: Math.round(rand(0.8, 1.5) * 100) / 100,
+                        cellCount: Math.round(rand(0.4, 0.8) * 100) / 100,
+                        viability, titerMgL: titer, qcStatus: qc,
+                    });
+                }
+            }
+            return wells;
+        };
+
+        const generateOligoPlate = (seed) => {
+            const fragments = ['F1','F2','F3','F4'];
+            const statuses = ['READY','SYNTHESIZED','QC_PASS','QC_FAIL'];
+            const geneNames = ['EGFR','HER2','PD1','PDL1','CD20','VEGF','TNFa','IL6','CXCR4','BCL2','KRAS','TP53','BRCA1','MYC','AKT1','BRAF'];
+            const wells = [];
+            for (let r = 0; r < 16; r++) {
+                for (let c = 0; c < 24; c++) {
+                    const idx = r * 24 + c;
+                    const gene = geneNames[r % geneNames.length];
+                    const frag = fragments[c % 4];
+                    const len = Math.round(rand(60, 200));
+                    const gc = Math.round(rand(40, 65) * 10) / 10;
+                    const tm = Math.round((64.9 + 41 * (gc/100 * len - 16.4) / len) * 10) / 10;
+                    const status = Math.random() > 0.08 ? pick(statuses.slice(0,3)) : 'QC_FAIL';
+
+                    wells.push({
+                        wellId: `${ROW_LABELS_384[r]}${c+1}`, row: ROW_LABELS_384[r], col: c+1,
+                        oligoId: `OLG-${String(idx+1+seed*384).padStart(5,'0')}`,
+                        poolId: `POOL-${String(seed+1).padStart(2,'0')}`,
+                        targetGene: gene, fragment: frag,
+                        lengthNt: len, tmC: tm, gcPercent: gc,
+                        synthStatus: status,
+                    });
+                }
+            }
             return wells;
         };
 
         // ============================================================================
-        // TEMPLATE DEFINITION
+        // PLATE DATABASE
         // ============================================================================
-        const template = {
-            id: 'tmpl-on-cell-binding',
-            name: 'On-Cell Binding Assay (96-well)',
-            description: 'Dose-response assay for antibody binding to cell surface EGFR',
-            columns: [
-                { name: 'Antibody ID', type: 'string', required: true },
-                { name: 'Sample Type', type: 'categorical', required: true, vocab: ['Monoclonal', 'Polyclonal', 'Chimeric', 'Humanized'] },
-                { name: 'Concentration nM', type: 'number', required: true },
-                { name: 'Species', type: 'categorical', required: true, vocab: ['Mouse', 'Rabbit', 'Human', 'Goat'] },
-                { name: 'Cell Line', type: 'categorical', required: true, vocab: ['CHO-hEGFR', 'HEK293', 'HeLa', 'NIH3T3'] },
-                { name: 'MFI Signal', type: 'number', required: true },
-                { name: 'Percent Binding', type: 'number', required: true },
-                { name: 'Pass/Fail Status', type: 'categorical', required: true, vocab: ['PASS', 'FAIL'] },
-            ],
+        const plateDatabase = [
+            { plateId: `${PLATE_PREFIX}-2026-001`, name: 'EGFR Binding Panel A', templateKey: 'on-cell-binding', seed: 0, created: '2026-02-14' },
+            { plateId: `${PLATE_PREFIX}-2026-002`, name: 'EGFR Binding Panel B', templateKey: 'on-cell-binding', seed: 1, created: '2026-02-15' },
+            { plateId: `${PLATE_PREFIX}-2026-003`, name: 'IgG Transfection Batch 1', templateKey: 'transfection', seed: 0, created: '2026-02-18' },
+            { plateId: `${PLATE_PREFIX}-2026-004`, name: 'IgG Transfection Batch 2', templateKey: 'transfection', seed: 1, created: '2026-02-19' },
+            { plateId: `${PLATE_PREFIX}-2026-005`, name: 'GridSynth Oligo Pool A', templateKey: 'oligo-library', seed: 0, created: '2026-02-20' },
+            { plateId: `${PLATE_PREFIX}-2026-006`, name: 'GridSynth Oligo Pool B', templateKey: 'oligo-library', seed: 1, created: '2026-02-22' },
+        ];
+
+        const getPlateData = (plate) => {
+            switch (plate.templateKey) {
+                case 'on-cell-binding': return generateBindingPlate(plate.seed);
+                case 'transfection': return generateTransfectionPlate(plate.seed);
+                case 'oligo-library': return generateOligoPlate(plate.seed);
+                default: return [];
+            }
         };
 
         // ============================================================================
-        // PLATE VIEW COMPONENT
+        // PLATE VIEW — handles 96 and 384
         // ============================================================================
         const PlateView = ({ wells, template }) => {
-            const [colorByColumn, setColorByColumn] = useState('mfiSignal');
-            const [tooltip, setTooltip] = useState(null);
-            const [activeWell, setActiveWell] = useState(null);
+            const numericCols = template.columns.filter(c => c.type === 'number');
+            const [colorKey, setColorKey] = useState(numericCols[0]?.key || '');
+            const [hovered, setHovered] = useState(null);
 
-            const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-            const cols = Array.from({ length: 12 }, (_, i) => i + 1);
+            const rows = Array.from({length: template.rows}, (_, i) => (template.format === 384 ? ROW_LABELS_384 : ROW_LABELS_96)[i]);
+            const cols = Array.from({length: template.cols}, (_, i) => i + 1);
 
-            const colorColumn = template.columns.find(c => {
-                const key = c.name.toLowerCase().replace(/\s+/g, '');
-                const colKey = colorByColumn.toLowerCase().replace(/\s+/g, '');
-                return key === colKey || (c.name === 'MFI Signal' && colorByColumn === 'mfiSignal');
-            });
+            const is384 = template.format === 384;
+            const wellSize = is384 ? 14 : 28;
+            const gap = is384 ? 3 : 8;
+            const labelOffset = is384 ? 28 : 40;
+            const svgW = cols.length * (wellSize + gap) + labelOffset + 10;
+            const svgH = rows.length * (wellSize + gap) + labelOffset + 10;
 
-            const numericColumns = template.columns.filter(c => c.type === 'number');
-
-            // Calculate color scale for numeric columns
-            const getColorForWell = (well) => {
-                const columnMap = {
-                    'mfiSignal': well.mfiSignal,
-                    'percentBinding': well.percentBinding,
-                };
-
-                const value = columnMap[colorByColumn];
-                if (value === undefined) return '#e5e7eb';
-
-                // Get min/max from all wells for this column
-                const allValues = wells.map(w => {
-                    const vals = {
-                        'mfiSignal': w.mfiSignal,
-                        'percentBinding': w.percentBinding,
-                    };
-                    return vals[colorByColumn];
-                }).filter(v => v !== undefined);
-
-                const min = Math.min(...allValues);
-                const max = Math.max(...allValues);
-                const normalized = (value - min) / (max - min);
-
-                // Blue -> Purple -> Pink -> Red gradient
-                const colors = [
-                    { pos: 0, r: 59, g: 130, b: 246 },    // Blue
-                    { pos: 0.33, r: 139, g: 92, b: 246 },  // Purple
-                    { pos: 0.66, r: 236, g: 72, b: 153 },  // Pink
-                    { pos: 1, r: 248, g: 113, b: 113 },    // Red
-                ];
-
-                let color1, color2, pos1, pos2;
-                for (let i = 0; i < colors.length - 1; i++) {
-                    if (normalized >= colors[i].pos && normalized <= colors[i + 1].pos) {
-                        color1 = colors[i];
-                        color2 = colors[i + 1];
-                        pos1 = colors[i].pos;
-                        pos2 = colors[i + 1].pos;
-                        break;
-                    }
-                }
-
-                const t = (normalized - pos1) / (pos2 - pos1);
-                const r = Math.round(color1.r + t * (color2.r - color1.r));
-                const g = Math.round(color1.g + t * (color2.g - color1.g));
-                const b = Math.round(color1.b + t * (color2.b - color1.b));
-
-                return `rgb(${r}, ${g}, ${b})`;
+            const getColor = (well) => {
+                const val = well[colorKey];
+                if (val === undefined || val === null) return '#e5e7eb';
+                const allVals = wells.map(w => w[colorKey]).filter(v => v !== undefined && v !== null);
+                if (allVals.length === 0) return '#e5e7eb';
+                const min = Math.min(...allVals), max = Math.max(...allVals);
+                if (max === min) return '#8b5cf6';
+                const n = (val - min) / (max - min);
+                const stops = [{p:0,r:59,g:130,b:246},{p:0.33,r:139,g:92,b:246},{p:0.66,r:236,g:72,b:153},{p:1,r:248,g:113,b:113}];
+                let c1=stops[0], c2=stops[1];
+                for (let i=0;i<stops.length-1;i++) { if (n>=stops[i].p && n<=stops[i+1].p) {c1=stops[i];c2=stops[i+1];break;} }
+                const t = (n-c1.p)/(c2.p-c1.p);
+                return `rgb(${Math.round(c1.r+t*(c2.r-c1.r))},${Math.round(c1.g+t*(c2.g-c1.g))},${Math.round(c1.b+t*(c2.b-c1.b))})`;
             };
 
-            const handleWellHover = (well, e) => {
-                const svg = e.currentTarget.closest('svg');
-                const rect = svg.getBoundingClientRect();
-                setTooltip({
-                    well,
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top,
-                });
-                setActiveWell(well.wellId);
+            // For categorical coloring
+            const getCatColor = (well) => {
+                const catCols = template.columns.filter(c => c.type === 'categorical');
+                if (catCols.length === 0) return getColor(well);
+                const catCol = catCols[0];
+                const val = well[catCol.key];
+                const vocab = catCol.vocab || [];
+                const idx = vocab.indexOf(val);
+                const palette = ['#3b82f6','#8b5cf6','#ec4899','#f97316','#22c55e','#eab308','#06b6d4','#f43f5e'];
+                return idx >= 0 ? palette[idx % palette.length] : '#9ca3af';
             };
-
-            const wellSize = 28;
-            const svgWidth = cols.length * (wellSize + 8) + 40;
-            const svgHeight = rows.length * (wellSize + 8) + 40;
 
             return (
                 <div className="space-y-4">
                     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Color by:</label>
-                            <select
-                                value={colorByColumn}
-                                onChange={(e) => setColorByColumn(e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                                {numericColumns.map(col => (
-                                    <option key={col.name} value={col.name.toLowerCase().replace(/\s+/g, '')}>
-                                        {col.name}
-                                    </option>
-                                ))}
+                            <select value={colorKey} onChange={e => setColorKey(e.target.value)}
+                                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                {numericCols.map(c => <option key={c.key} value={c.key}>{c.name}</option>)}
                             </select>
+                        </div>
+                        <div className="text-sm text-gray-500">
+                            {template.format}-well ({template.rows}×{template.cols}) • {wells.length} data points
                         </div>
                     </div>
 
                     <div className="overflow-x-auto bg-gray-50 p-4 rounded-lg">
-                        <svg width={svgWidth} height={svgHeight} className="mx-auto" onMouseMove={() => {}} onMouseLeave={() => setTooltip(null)}>
-                            {/* Row labels */}
+                        <svg width={svgW} height={svgH} className="mx-auto"
+                             onMouseLeave={() => setHovered(null)}>
                             {rows.map((row, idx) => (
-                                <text
-                                    key={`row-${row}`}
-                                    x="10"
-                                    y={40 + idx * (wellSize + 8) + wellSize / 2 + 5}
-                                    fontSize="12"
-                                    fontWeight="600"
-                                    textAnchor="start"
-                                    fill="#374151"
-                                >
-                                    {row}
-                                </text>
+                                <text key={`r-${row}`} x={is384?8:10} y={labelOffset + idx*(wellSize+gap)+wellSize/2+4}
+                                      fontSize={is384?9:12} fontWeight="600" fill="#374151">{row}</text>
                             ))}
-
-                            {/* Column labels */}
-                            {cols.map((col) => (
-                                <text
-                                    key={`col-${col}`}
-                                    x={40 + (col - 1) * (wellSize + 8) + wellSize / 2}
-                                    y="25"
-                                    fontSize="12"
-                                    fontWeight="600"
-                                    textAnchor="middle"
-                                    fill="#374151"
-                                >
-                                    {col}
-                                </text>
+                            {cols.map(col => (
+                                <text key={`c-${col}`} x={labelOffset + (col-1)*(wellSize+gap)+wellSize/2}
+                                      y={labelOffset-8} fontSize={is384?8:12} fontWeight="600" textAnchor="middle" fill="#374151">{col}</text>
                             ))}
-
-                            {/* Wells */}
-                            {wells.map((well) => {
-                                const rowIdx = rows.indexOf(well.row);
-                                const colIdx = well.col - 1;
-                                const x = 40 + colIdx * (wellSize + 8) + wellSize / 2;
-                                const y = 40 + rowIdx * (wellSize + 8) + wellSize / 2;
-                                const isActive = activeWell === well.wellId;
-
+                            {wells.map(well => {
+                                const ri = rows.indexOf(well.row);
+                                const ci = well.col - 1;
+                                const cx = labelOffset + ci*(wellSize+gap) + wellSize/2;
+                                const cy = labelOffset + ri*(wellSize+gap) + wellSize/2;
                                 return (
-                                    <circle
-                                        key={well.wellId}
-                                        cx={x}
-                                        cy={y}
-                                        r={wellSize / 2}
-                                        fill={getColorForWell(well)}
-                                        className={`well-circle ${isActive ? 'well-circle-active' : ''}`}
-                                        onMouseEnter={(e) => handleWellHover(well, e)}
-                                        onTouchStart={(e) => handleWellHover(well, e)}
-                                        onMouseLeave={() => setTooltip(null)}
+                                    <circle key={well.wellId} cx={cx} cy={cy} r={wellSize/2}
+                                        fill={getColor(well)}
+                                        className={`well-circle ${hovered===well.wellId?'well-circle-active':''}`}
+                                        onMouseEnter={() => setHovered(well.wellId)}
                                     />
                                 );
                             })}
                         </svg>
                     </div>
 
-                    {tooltip && (
-                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-sm">
-                            <div className="font-semibold text-gray-900 mb-2">{tooltip.well.wellId}</div>
-                            <div className="grid grid-cols-2 gap-2 text-sm">
-                                <div><span className="text-gray-600">Antibody:</span> {tooltip.well.antibodyId}</div>
-                                <div><span className="text-gray-600">Conc (nM):</span> {tooltip.well.concentrationNm.toFixed(3)}</div>
-                                <div><span className="text-gray-600">MFI:</span> {tooltip.well.mfiSignal}</div>
-                                <div><span className="text-gray-600">% Binding:</span> {tooltip.well.percentBinding.toFixed(1)}%</div>
-                                <div><span className="text-gray-600">Sample Type:</span> {tooltip.well.sampleType}</div>
-                                <div><span className="text-gray-600">Cell Line:</span> {tooltip.well.cellLine}</div>
+                    {hovered && (() => {
+                        const w = wells.find(x => x.wellId === hovered);
+                        if (!w) return null;
+                        return (
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md">
+                                <div className="font-semibold text-gray-900 mb-2">{w.wellId}</div>
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                    {template.columns.map(col => (
+                                        <div key={col.key}>
+                                            <span className="text-gray-500">{col.name}:</span>{' '}
+                                            <span className="font-medium">{typeof w[col.key]==='number' ? (Number.isInteger(w[col.key]) ? w[col.key] : w[col.key].toFixed(2)) : w[col.key]}</span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        );
+                    })()}
 
                     <div className="border-t pt-4">
-                        <p className="text-sm font-medium text-gray-700 mb-2">Legend:</p>
+                        <p className="text-sm font-medium text-gray-700 mb-2">Legend ({template.columns.find(c=>c.key===colorKey)?.name || colorKey}):</p>
                         <div className="gradient-bar mb-1"></div>
-                        <div className="flex justify-between text-xs text-gray-600">
-                            <span>Low</span>
-                            <span>High</span>
-                        </div>
+                        <div className="flex justify-between text-xs text-gray-600"><span>Low</span><span>High</span></div>
                     </div>
                 </div>
             );
         };
 
         // ============================================================================
-        // GRID VIEW COMPONENT
+        // GRID VIEW
         // ============================================================================
         const GridView = ({ wells, template }) => {
             const [sortCol, setSortCol] = useState('wellId');
             const [sortAsc, setSortAsc] = useState(true);
+            const allKeys = ['wellId', ...template.columns.map(c => c.key)];
+            const allLabels = { wellId: 'Well', ...Object.fromEntries(template.columns.map(c => [c.key, c.name])) };
 
-            const sortedWells = useMemo(() => {
-                const sorted = [...wells].sort((a, b) => {
-                    const aVal = a[sortCol] || '';
-                    const bVal = b[sortCol] || '';
-                    const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+            const sorted = useMemo(() => {
+                const s = [...wells].sort((a,b) => {
+                    const av = a[sortCol]||'', bv = b[sortCol]||'';
+                    const cmp = av < bv ? -1 : av > bv ? 1 : 0;
                     return sortAsc ? cmp : -cmp;
                 });
-                return sorted;
+                return s;
             }, [wells, sortCol, sortAsc]);
 
-            const handleSort = (col) => {
-                if (sortCol === col) {
-                    setSortAsc(!sortAsc);
-                } else {
-                    setSortCol(col);
-                    setSortAsc(true);
-                }
-            };
+            const handleSort = col => { if (sortCol===col) setSortAsc(!sortAsc); else { setSortCol(col); setSortAsc(true); } };
 
-            const columnKeys = [
-                'wellId',
-                'antibodyId',
-                'sampleType',
-                'concentrationNm',
-                'species',
-                'cellLine',
-                'mfiSignal',
-                'percentBinding',
-                'passFailStatus',
-            ];
-
-            const columnLabels = {
-                'wellId': 'Well ID',
-                'antibodyId': 'Antibody ID',
-                'sampleType': 'Sample Type',
-                'concentrationNm': 'Concentration (nM)',
-                'species': 'Species',
-                'cellLine': 'Cell Line',
-                'mfiSignal': 'MFI Signal',
-                'percentBinding': '% Binding',
-                'passFailStatus': 'Pass/Fail',
-            };
-
-            const renderCell = (key, value) => {
-                if (key === 'percentBinding') {
-                    return value.toFixed(1) + '%';
-                }
-                if (key === 'concentrationNm') {
-                    return value.toFixed(3);
-                }
-                if (key === 'passFailStatus') {
-                    const isPass = value === 'PASS';
-                    return <span className={isPass ? 'cell-boolean-true' : 'cell-boolean-false'}>{value}</span>;
-                }
-                return value;
+            const renderCell = (key, val) => {
+                if (val === undefined || val === null) return '—';
+                if (typeof val === 'number') return Number.isInteger(val) ? val : val.toFixed(2);
+                if (val === 'PASS' || val === 'QC_PASS' || val === 'READY' || val === 'SYNTHESIZED') return <span className="cell-boolean-true">{val}</span>;
+                if (val === 'FAIL' || val === 'FAILED' || val === 'QC_FAIL' || val === 'LOW_TITER' || val === 'LOW_VIABILITY') return <span className="cell-boolean-false">{val}</span>;
+                return val;
             };
 
             return (
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto" style={{maxHeight:'500px',overflowY:'auto'}}>
                     <table className="data-table">
                         <thead>
-                            <tr>
-                                {columnKeys.map(key => (
-                                    <th
-                                        key={key}
-                                        onClick={() => handleSort(key)}
-                                        className="cursor-pointer hover:bg-gray-200 select-none"
-                                        title="Click to sort"
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            {columnLabels[key]}
-                                            {sortCol === key && (
-                                                <span className="text-xs">{sortAsc ? '▲' : '▼'}</span>
-                                            )}
-                                        </div>
-                                    </th>
-                                ))}
-                            </tr>
+                            <tr>{allKeys.map(k => (
+                                <th key={k} onClick={() => handleSort(k)} className="cursor-pointer hover:bg-gray-200 select-none">
+                                    <div className="flex items-center gap-1">{allLabels[k]}{sortCol===k && <span className="text-xs">{sortAsc?'▲':'▼'}</span>}</div>
+                                </th>
+                            ))}</tr>
                         </thead>
                         <tbody>
-                            {sortedWells.map((well, idx) => (
-                                <tr key={well.wellId}>
-                                    {columnKeys.map(key => (
-                                        <td
-                                            key={`${well.wellId}-${key}`}
-                                            className={key.includes('nM') || key.includes('Signal') || key.includes('Binding') ? 'cell-numeric' : ''}
-                                        >
-                                            {renderCell(key, well[key])}
-                                        </td>
-                                    ))}
-                                </tr>
+                            {sorted.slice(0,200).map(w => (
+                                <tr key={w.wellId}>{allKeys.map(k => (
+                                    <td key={`${w.wellId}-${k}`} className={typeof w[k]==='number'?'cell-numeric':''}>{renderCell(k,w[k])}</td>
+                                ))}</tr>
                             ))}
+                            {sorted.length > 200 && <tr><td colSpan={allKeys.length} className="text-center text-gray-500 py-4">Showing 200 of {sorted.length} rows</td></tr>}
                         </tbody>
                     </table>
                 </div>
@@ -521,92 +392,98 @@
         };
 
         // ============================================================================
-        // TEMPLATE SCHEMA COMPONENT
+        // TEMPLATE SCHEMA VIEW
         // ============================================================================
-        const TemplateView = ({ template }) => {
-            return (
-                <div className="space-y-6">
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{template.name}</h3>
-                        <p className="text-gray-600">{template.description}</p>
-                    </div>
-
-                    <div>
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">Columns ({template.columns.length})</h4>
-                        <div className="space-y-2">
-                            {template.columns.map((col, idx) => (
-                                <div key={idx} className="schema-item">
-                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                                        <span className="font-medium text-gray-900">{col.name}</span>
-                                        <span className={`type-badge type-${col.type}`}>{col.type}</span>
-                                        {col.required && <span className="text-xs text-gray-500">(required)</span>}
-                                    </div>
-                                    {col.vocab && (
-                                        <div className="mt-2 text-sm text-gray-600">
-                                            <strong>Values:</strong> {col.vocab.join(', ')}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <h4 className="font-medium text-gray-900 mb-2">About this Template</h4>
-                        <p className="text-sm text-gray-700">
-                            This template defines the structure for on-cell binding assays using 96-well microtiter plates.
-                            Each well contains measured fluorescent signal (MFI) from antibody-EGFR binding, with dose-response
-                            across a serial dilution (1000 nM → 0.006 nM). Data is modeled with Hill equation pharmacokinetics.
-                        </p>
+        const TemplateView = ({ template }) => (
+            <div className="space-y-6">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{template.name}</h3>
+                    <p className="text-gray-600">{template.description}</p>
+                    <div className="mt-2 flex gap-3 text-sm text-gray-500">
+                        <span className={`plate-badge ${template.format===384?'badge-384':'badge-96'}`}>{template.format}-well</span>
+                        <span>{template.rows}×{template.cols}</span>
+                        <span>{template.columns.length} columns</span>
                     </div>
                 </div>
-            );
-        };
+                <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Column Schema</h4>
+                    {template.columns.map((col, i) => (
+                        <div key={i} className="schema-item">
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="font-medium text-gray-900">{col.name}</span>
+                                <span className={`type-badge type-${col.type}`}>{col.type}</span>
+                                {col.required && <span className="text-xs text-gray-500">(required)</span>}
+                            </div>
+                            {col.vocab && <div className="mt-2 text-sm text-gray-600"><strong>Values:</strong> {col.vocab.join(', ')}</div>}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
 
         // ============================================================================
-        // MAIN APP COMPONENT
+        // MAIN APP
         // ============================================================================
         const App = () => {
-            const wells = useMemo(() => generatePlateData(), []);
+            const [selectedPlateIdx, setSelectedPlateIdx] = useState(0);
             const [activeTab, setActiveTab] = useState('plate');
+            const plate = plateDatabase[selectedPlateIdx];
+            const template = templates[plate.templateKey];
+            const wells = useMemo(() => getPlateData(plate), [selectedPlateIdx]);
 
             return (
                 <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
-                    {/* Header */}
                     <header className="bg-white border-b border-gray-200 shadow-sm">
-                        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                            <div className="flex flex-col gap-2">
-                                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">PlateRegistry</h1>
-                                <p className="text-lg text-gray-600">Interactive Demo — Experimental Data Visualization</p>
-                                <p className="text-sm text-gray-500 mt-2">
-                                    This demo showcases PlateRegistry's core features: plate visualization with heatmap coloring,
-                                    spreadsheet-style grid view, and template-based data schema. All data is simulated using Hill
-                                    equation dose-response modeling for a realistic EGFR antibody screening experiment.
-                                </p>
-                            </div>
+                        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">PlateRegistry</h1>
+                            <p className="text-lg text-gray-600 mt-1">Interactive Demo — Multi-Template Plate Database</p>
+                            <p className="text-sm text-gray-500 mt-2">
+                                Browse plates across 3 templates: binding assays (96-well), transfection plates (96-well), and oligo library plates (384-well).
+                                All plates share the <code className="bg-gray-100 px-1 rounded font-mono text-xs">{PLATE_PREFIX}-2026-XXX</code> identifier prefix.
+                            </p>
                         </div>
                     </header>
 
-                    {/* Content */}
                     <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        {/* Plate Info */}
-                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Plate Selector */}
+                        <div className="mb-8">
+                            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Plate Database ({plateDatabase.length} plates)</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {plateDatabase.map((p, i) => (
+                                    <div key={p.plateId}
+                                         className={`plate-card bg-white rounded-lg border border-gray-200 p-4 ${selectedPlateIdx===i?'active':''}`}
+                                         onClick={() => { setSelectedPlateIdx(i); setActiveTab('plate'); }}>
+                                        <div className="flex items-center justify-between mb-1">
+                                            <code className="text-xs font-mono text-blue-600 font-bold">{p.plateId}</code>
+                                            <span className={`plate-badge ${templates[p.templateKey].format===384?'badge-384':'badge-96'}`}>
+                                                {templates[p.templateKey].format}w
+                                            </span>
+                                        </div>
+                                        <div className="font-semibold text-gray-900 text-sm">{p.name}</div>
+                                        <div className="text-xs text-gray-500 mt-1">{templates[p.templateKey].name} • {p.created}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Selected Plate Info */}
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Plate Name</h3>
-                                    <p className="text-xl font-semibold text-gray-900 mt-1">Screen-01 EGFR Panel</p>
+                                    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Plate ID</div>
+                                    <div className="text-lg font-bold font-mono text-blue-600 mt-1">{plate.plateId}</div>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Template</h3>
-                                    <p className="text-xl font-semibold text-gray-900 mt-1">{template.name}</p>
+                                    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Template</div>
+                                    <div className="text-lg font-semibold text-gray-900 mt-1">{template.name}</div>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Format</h3>
-                                    <p className="text-xl font-semibold text-gray-900 mt-1">96-well (8×12)</p>
+                                    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Format</div>
+                                    <div className="text-lg font-semibold text-gray-900 mt-1">{template.format}-well ({template.rows}×{template.cols})</div>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Data Points</h3>
-                                    <p className="text-xl font-semibold text-gray-900 mt-1">{wells.length} wells</p>
+                                    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">Wells</div>
+                                    <div className="text-lg font-semibold text-gray-900 mt-1">{wells.length}</div>
                                 </div>
                             </div>
                         </div>
@@ -614,45 +491,29 @@
                         {/* Tabs */}
                         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                             <div className="border-b border-gray-200 flex flex-wrap">
-                                {[
-                                    { id: 'plate', label: 'Plate Visualization' },
-                                    { id: 'grid', label: 'Grid View' },
-                                    { id: 'template', label: 'Template Schema' },
-                                ].map(tab => (
-                                    <button
-                                        key={tab.id}
-                                        onClick={() => setActiveTab(tab.id)}
+                                {[{id:'plate',label:'Plate View'},{id:'grid',label:'Grid View'},{id:'template',label:'Template Schema'}].map(tab => (
+                                    <button key={tab.id} onClick={() => setActiveTab(tab.id)}
                                         className={`px-4 sm:px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
-                                            activeTab === tab.id
-                                                ? 'border-blue-500 text-blue-600 bg-blue-50'
-                                                : 'border-transparent text-gray-600 hover:text-gray-900'
-                                        }`}
-                                    >
+                                            activeTab===tab.id ? 'border-blue-500 text-blue-600 bg-blue-50' : 'border-transparent text-gray-600 hover:text-gray-900'}`}>
                                         {tab.label}
                                     </button>
                                 ))}
                             </div>
-
-                            {/* Tab Content */}
                             <div className="p-6">
-                                {activeTab === 'plate' && <PlateView wells={wells} template={template} />}
-                                {activeTab === 'grid' && <GridView wells={wells} template={template} />}
-                                {activeTab === 'template' && <TemplateView template={template} />}
+                                {activeTab==='plate' && <PlateView wells={wells} template={template} />}
+                                {activeTab==='grid' && <GridView wells={wells} template={template} />}
+                                {activeTab==='template' && <TemplateView template={template} />}
                             </div>
                         </div>
 
-                        {/* Footer */}
                         <div className="mt-12 text-center text-sm text-gray-600">
-                            <p>PlateRegistry Demo • Mock data generated with Hill equation pharmacokinetics • Portfolio Piece 2026</p>
+                            <p>PlateRegistry Demo • 3 templates × 6 plates • Standardized {PLATE_PREFIX}-prefixed plate IDs • Portfolio 2026</p>
                         </div>
                     </main>
                 </div>
             );
         };
 
-        // ============================================================================
-        // RENDER
-        // ============================================================================
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
