@@ -654,6 +654,133 @@
     </div>
   </div>
 
+  <h3>Full Entity Graph</h3>
+  <p class="muted" style="font-size: 12px; margin-bottom: 12px;">Complete 14-entity relational schema with primary keys, foreign keys, and all bidirectional relations</p>
+  <div style="background:#0d1117; border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+    <div style="background:#161b22; padding:8px 16px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--border);">
+      <span style="width:12px; height:12px; border-radius:50%; background:#ff5f57;"></span>
+      <span style="width:12px; height:12px; border-radius:50%; background:#febc2e;"></span>
+      <span style="width:12px; height:12px; border-radius:50%; background:#28c840;"></span>
+      <span style="font-size:12px; color:#8b949e; margin-left:8px;">ab-discovery-data-model — entity-graph v4</span>
+    </div>
+    <div style="overflow-x:auto; padding:16px;">
+      <pre style="margin:0; font-family:'SF Mono','Fira Code','Cascadia Code',Consolas,monospace; font-size:11px; line-height:1.4; color:#4ade80; white-space:pre; tab-size:2;">┌──────────────────────────────────────────────────────────────────────────────────┐
+│            AB DISCOVERY PLATFORM — ENTITY GRAPH  (v4, Mar 2026)                 │
+│            All relations are bidirectional (◀──▶). PKs are SQL join keys.       │
+└──────────────────────────────────────────────────────────────────────────────────┘
+  SEQUENCE IDENTITY              MOLECULAR DESIGN              DNA ENGINEERING
+ ┌───────────────────┐         ┌───────────────────┐        ┌───────────────────┐
+ │  VariableChain    │◀─VH/VL─▶│  DesignedBinder   │◀─Pair─▶│    Antibody       │
+ │  PK: VC-{0000}   │         │  PK: DB-{0000}    │        │  PK: AB-{0000}    │
+ │                   │         │                   │        │                   │
+ │ · Chain Type      │         │ · Design Method   │        │ · Designed Binder │
+ │ · CDR1/CDR2/CDR3  │         │ · VH (→ VC)       │        │ · HC Const Reg    │
+ │ · V/J Gene Call † │         │ · VL (→ VC)       │        │ · LC Const Reg    │
+ │ · Design Method † │   ┌───────────────────┐     │        │ · Format          │
+ │ · Species         │   │  ConstantRegion   │◀─HC+LC──────▶│ · Calc MW / pI *  │
+ └────────┬──────────┘   │  PK: CR-{0000}    │              └────────┬──────────┘
+          │              │                   │                       │
+          │              │ · Domain Type     │                       │
+          │              │ · Isotype         │                       │
+     ◀──▶ 1:N            │ · Effector Fn     │                  ◀──▶ 1:N
+     codon opt           │ · Fc Mutations    │                  Identity
+          │              └───────────────────┘                       │
+          │                                                          ▼
+          ▼                                                ┌───────────────────┐
+ ┌───────────────────┐      ┌───────────────────┐         │   Construct        │
+ │      cDNA         │◀Ins──▶│    DNAFrag        │◀HC+LC──▶│  PK: CX-{0000}    │
+ │  PK: CD-{0000}   │      │  PK: DF-{0000}    │  Frags  │                   │
+ │                   │      │                   │         │ · Antibody (→ AB) │
+ │ · VarChain (→ VC) │      │ · cDNA (→ CD)     │         │ · HC/LC DNAFrags  │
+ │ · Chain (HC/LC)   │      │ · Fragment Role   │         │ · Vector          │
+ │ · DNA Sequence    │      │ · Chain Role      │         │ · Signal Peptide  │
+ │ · Vendor          │      │ · Fragment Seq    │         │ · Cloning Method  │
+ │ · Codon Opt Ver   │      │ · Length bp       │         └────────┬──────────┘
+ └───────────────────┘      └───────────────────┘                  │
+                                                              ◀──▶ 1:N
+                                                              Expression /
+                                                              Purification
+                                                                   │
+  ANTIGEN TRACKING                                                 ▼
+ ┌───────────────────┐                                    ┌───────────────────┐
+ │    Antigen        │                                    │  AntibodyBatch    │
+ │  PK: AG-{0000}   │                                    │  PK: BT-{0000}   │
+ │                   │      ┌───────────────────┐        │                   │
+ │ · Domain Form     │◀Par──▶│  AntigenBatch     │        │ · Construct (→CX) │
+ │ · Tag ‡           │      │  PK: AL-{0000}   │        │ · Expr System     │
+ │ · Protein Seq     │      │                   │        │ · Yield / Conc    │
+ │ · Antigen Class   │      │ · Antigen (→ AG)  │        │ · aSEC / Tm /     │
+ │ · Species         │      │ · Lot Number      │        │   Tagg (QC) **    │
+ │ · UniProt ID      │      │ · Conjugation     │        │ · QC Status       │
+ └───────────────────┘      │ · QC Status       │        └────────┬──────────┘
+                            └────────┬──────────┘                 │
+                                     │                       ◀──▶ 1:N
+                                ◀──▶ 1:N                     Protein Lot
+                                Antigen Lot                       │
+                                     │                            │
+                                     ▼  ◀──▶                      ▼
+                            ┌──────────────────────────────────────────────────┐
+                            │                AssayResult                       │
+                            │              PK: AR-{0000}                      │
+                            │          (Single Measurement)                    │
+                            │                                                  │
+                            │ · Ab Batch (→ BT)   · Ag Batch (→ AL)          │
+                            │ · Assay Def (→ AD)   · Metric Value   · Unit    │
+                            │ · Metric Name        · Comparator    · Qual     │
+                            │ · Assay Panel        · Run Date      · Site     │
+                            └──────────────────────────┬───────────────────────┘
+                                                       │
+                  ┌───────────┬───────────┬────────────┼──────────┬────────────┐
+                  ▼           ▼           ▼            ▼          ▼            ▼
+           ┌───────────┬───────────┬──────────┬──────────┬────────┬───────────┐
+           │   PSR     │  AC-SIN   │  SPR     │  SPR     │  BVP   │  aSEC     │
+           │ Polyspec  │ Self-Int  │ Target   │Off-tgt   │ ELISA  │ Monomer   │
+           │(unitless) │(unitless) │ KD (nM)  │HSA (µM)  │(OD450) │   (%)     │
+           └───────────┴───────────┴──────────┴──────────┴────────┴───────────┘
+                                                               ┌────────┬────────┐
+                                                               │  Tm    │ Tagg   │
+    ┌───────────────────┐                                      │ (°C)   │ (°C)   │
+    │ AssayDefinition   │◀── Assay Def ──▶ (linked from AR)    └────────┴────────┘
+    │ PK: AD-{0000}     │
+    │ · Assay Category  │
+    │ · Default Metric  │
+    │ · Default Unit    │
+    │ · Method          │
+    └───────────────────┘
+────────────────────────────────────────────────────────────────────────────────
+ALL RELATIONS ARE BIDIRECTIONAL (◀──▶):
+  VariableChain ◀──1:N──▶ cDNA            (one AA seq, many codon opts)
+  VariableChain ◀──1:N──▶ DesignedBinder  (VH/VL reuse across binders)
+  ConstantRegion ◀──1:N──▶ Antibody       (HC/LC constant reuse)
+  DesignedBinder ◀──1:N──▶ Antibody       (one binder, many formats)
+  cDNA ◀──1:N──▶ DNAFrag                  (one cDNA, many cloning fragments)
+  DNAFrag ◀──N:1──▶ Construct             (HC+LC frags per construct)
+  Antibody ◀──1:N──▶ Construct            (one identity, many constructs)
+  Construct ◀──1:N──▶ AntibodyBatch       (one construct, many lots)
+  Antigen ◀──1:N──▶ AntigenBatch          (one antigen, many reagent lots)
+  AntibodyBatch ◀──1:N──▶ AssayResult     (one batch, many measurements)
+  AntigenBatch ◀──1:N──▶ AssayResult      (one lot, many measurements)
+  AssayDefinition ◀──1:N──▶ AssayResult   (one assay type, many results)
+  (AntibodyBatch N:N AntigenBatch implicitly, through AssayResult)
+────────────────────────────────────────────────────────────────────────────────
+FOOTNOTES:
+  *  Calc MW/pI = full expressed antibody (variable + constant), excl signal peptide
+  ** aSEC/Tm/Tagg on AntibodyBatch = purification-day headline QC snapshot
+     for fast triage; corresponding AssayResult rows are the measurement
+     records for traceability. AntibodyBatch QC fields should not be
+     edited independently.
+  †  V/J Gene Call populated for natural/library chains; Design Method for AI-generated
+  ‡  Tag is identity-level: same domain + different tag = distinct Antigen record
+────────────────────────────────────────────────────────────────────────────────
+DEFERRED (v4):
+  ┌─ ─ ─ ─ ─ ─ ─ ─ ─┐
+  │  DecisionLog      │  Future: stage-gate go/no-go, rationale
+  │  (deferred node)  │  Will link to Antibody + AntibodyBatch
+  └─ ─ ─ ─ ─ ─ ─ ─ ─┘
+────────────────────────────────────────────────────────────────────────────────</pre>
+    </div>
+  </div>
+
   <h3>Why This Matters</h3>
   <ul class="feature-list">
     <li><span class="check">→</span> <span><strong>Full lineage tracing</strong> — every protein traces back through its construct, sequence, and discovery campaign</span></li>
