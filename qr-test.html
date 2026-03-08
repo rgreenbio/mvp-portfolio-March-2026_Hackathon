@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>QR Test</title>
+<style>
+  body { background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui; color: #e8e8e8; gap: 24px; }
+  h2 { font-size: 18px; }
+  .qr-container { background: #fff; padding: 24px; border-radius: 12px; }
+  .qr-container img { width: 300px; height: 300px; }
+  p { color: #888; font-size: 13px; max-width: 400px; text-align: center; }
+  a { color: #4ade80; }
+</style>
+</head>
+<body>
+  <h2>Scan to test</h2>
+  <div class="qr-container">
+    <img src="qr-links.svg" alt="QR Code">
+  </div>
+  <p>Should open: <a href="https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/links.html">links.html</a></p>
+  <p>If the QR doesn't scan, use this backup generator:<br>
+  <a href="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/links.html" target="_blank">Generate via API →</a></p>
+</body>
+</html>
