@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Lock Screen Generator</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #111;
+    color: #e8e8e8;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 { font-size: 18px; margin-bottom: 8px; }
+  .hint { font-size: 13px; color: #888; margin-bottom: 24px; text-align: center; line-height: 1.5; }
+  .preview-frame {
+    border: 2px solid #333;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  canvas { display: block; }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #4ade80;
+    background: #4ade8022;
+    color: #4ade80;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #4ade8044; }
+  .size-info { font-size: 12px; color: #666; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<h1>QR Lock Screen Wallpaper</h1>
+<div class="hint">iPhone 15 Pro Max resolution (1290 × 2796)<br>Long-press the image or use the download button to save</div>
+
+<div class="preview-frame">
+  <canvas id="wallpaper" width="1290" height="2796" style="width:290px; height:628px;"></canvas>
+</div>
+
+<div class="controls">
+  <a id="download-btn" class="btn" download="robin-qr-lockscreen.png">Download PNG</a>
+</div>
+<div class="size-info">1290 × 2796 px · optimized for iPhone lock screen</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"></script>
+<script>
+const W = 1290;
+const H = 2796;
+const URL_TARGET = "https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/links.html";
+
+document.addEventListener('DOMContentLoaded', function() {
+  const canvas = document.getElementById('wallpaper');
+  const ctx = canvas.getContext('2d');
+
+  // Background: pure black
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, W, H);
+
+  // "SCAN TO CONNECT" label
+  ctx.fillStyle = '#4ade80';
+  ctx.font = '700 36px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '4px';
+  ctx.fillText('SCAN TO CONNECT', W / 2, 920);
+
+  // Name
+  ctx.fillStyle = '#e8e8e8';
+  ctx.font = '700 72px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.letterSpacing = '-1px';
+  ctx.fillText('Robin Green', W / 2, 1010);
+
+  // Role
+  ctx.fillStyle = '#888888';
+  ctx.font = '500 38px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.letterSpacing = '0px';
+  ctx.fillText('Synthetic Biology Platform Builder', W / 2, 1070);
+
+  // Generate QR into a temp canvas
+  const qrTemp = document.createElement('canvas');
+  QrCreator.render({
+    text: URL_TARGET,
+    radius: 0.0,
+    ecLevel: 'H',
+    fill: '#000000',
+    background: '#ffffff',
+    size: 600
+  }, qrTemp);
+
+  // White rounded rect background for QR
+  const qrSize = 660;
+  const qrX = (W - qrSize) / 2;
+  const qrY = 1140;
+  const r = 40;
+
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.moveTo(qrX + r, qrY);
+  ctx.lineTo(qrX + qrSize - r, qrY);
+  ctx.quadraticCurveTo(qrX + qrSize, qrY, qrX + qrSize, qrY + r);
+  ctx.lineTo(qrX + qrSize, qrY + qrSize - r);
+  ctx.quadraticCurveTo(qrX + qrSize, qrY + qrSize, qrX + qrSize - r, qrY + qrSize);
+  ctx.lineTo(qrX + r, qrY + qrSize);
+  ctx.quadraticCurveTo(qrX, qrY + qrSize, qrX, qrY + qrSize - r);
+  ctx.lineTo(qrX, qrY + r);
+  ctx.quadraticCurveTo(qrX, qrY, qrX + r, qrY);
+  ctx.closePath();
+  ctx.fill();
+
+  // Draw QR code centered in white box
+  const qrPad = 30;
+  ctx.drawImage(qrTemp, qrX + qrPad, qrY + qrPad, qrSize - qrPad * 2, qrSize - qrPad * 2);
+
+  // Subtle green glow behind QR
+  ctx.save();
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.shadowColor = '#4ade80';
+  ctx.shadowBlur = 80;
+  ctx.fillStyle = '#ffffff01';
+  ctx.fillRect(qrX, qrY, qrSize, qrSize);
+  ctx.restore();
+
+  // Bottom text
+  ctx.fillStyle = '#444444';
+  ctx.font = '400 30px -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('robin@rgreenbio.com', W / 2, 1900);
+
+  // Set download link
+  document.getElementById('download-btn').href = canvas.toDataURL('image/png');
+});
+</script>
+
+</body>
+</html>
