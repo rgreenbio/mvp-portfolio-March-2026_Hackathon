@@ -35,9 +35,9 @@
   }
 
   .container {
-    max-width: 480px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 32px;
   }
 
   /* --- HERO --- */
@@ -70,9 +70,9 @@
   }
 
   .hero .tagline {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-muted);
-    max-width: 340px;
+    max-width: 600px;
     margin: 0 auto;
     line-height: 1.5;
   }
@@ -89,6 +89,17 @@
   }
 
   /* --- STAT ROW --- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
   .stat-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -129,6 +140,7 @@
     flex-wrap: wrap;
     gap: 8px;
     margin: 16px 0;
+    justify-content: center;
   }
 
   .cred-pill {
@@ -271,6 +283,33 @@
     color: var(--accent);
     text-decoration: none;
   }
+
+  /* --- RESPONSIVE GRIDS --- */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .link-grid .link-card {
+    margin-bottom: 0;
+  }
+
+  .cv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .cv-grid .cv-section {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 700px) {
+    .link-grid { grid-template-columns: 1fr; }
+    .cv-grid { grid-template-columns: 1fr; }
+    .container { padding: 0 16px; }
+  }
 </style>
 </head>
 <body>
@@ -286,7 +325,7 @@
 <div class="container">
 
   <!-- QUICK STATS -->
-  <div class="stat-row">
+  <div class="stats-grid">
     <div class="stat-card">
       <div class="number green">~400</div>
       <div class="label">Antibodies / week</div>
@@ -295,8 +334,6 @@
       <div class="number blue">1,200</div>
       <div class="label">Transfections / week</div>
     </div>
-  </div>
-  <div class="stat-row">
     <div class="stat-card">
       <div class="number purple">7</div>
       <div class="label">Publications (Nature, Science)</div>
@@ -319,68 +356,66 @@
   <!-- CONTACT -->
   <div class="section-label">Get in Touch</div>
 
-  <a class="link-card" href="mailto:robin@rgreenbio.com">
-    <div class="link-icon" style="background:var(--accent-dim);">✉️</div>
-    <div>
-      <div class="link-label">robin@rgreenbio.com</div>
-      <div class="link-desc">Preferred contact — open to opportunities</div>
-    </div>
-  </a>
+  <div class="link-grid">
+    <a class="link-card" href="mailto:robin@rgreenbio.com">
+      <div class="link-icon" style="background:var(--accent-dim);">✉️</div>
+      <div>
+        <div class="link-label">robin@rgreenbio.com</div>
+        <div class="link-desc">Preferred contact — open to opportunities</div>
+      </div>
+    </a>
 
-  <a class="link-card" href="https://linkedin.com/in/robin-green-phd-166b8216" target="_blank">
-    <div class="link-icon" style="background:#3b82f622;">💼</div>
-    <div>
-      <div class="link-label">LinkedIn</div>
-      <div class="link-desc">robin-green-phd — professional profile</div>
-    </div>
-  </a>
+    <a class="link-card" href="https://linkedin.com/in/robin-green-phd-166b8216" target="_blank">
+      <div class="link-icon" style="background:#3b82f622;">💼</div>
+      <div>
+        <div class="link-label">LinkedIn</div>
+        <div class="link-desc">robin-green-phd — professional profile</div>
+      </div>
+    </a>
 
-  <a class="link-card" href="https://rgreenbio.com" target="_blank">
-    <div class="link-icon" style="background:#f9731622;">🌐</div>
-    <div>
-      <div class="link-label">rgreenbio.com</div>
-      <div class="link-desc">Full portfolio, case studies, writing</div>
-    </div>
-  </a>
+  </div>
 
   <!-- PORTFOLIO ARTIFACTS -->
   <div class="section-label">Portfolio Artifacts</div>
 
-  <a class="link-card" href="https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/" target="_blank">
-    <div class="link-icon" style="background:var(--accent-dim);">🧬</div>
-    <div>
-      <div class="link-label">Platform Work One-Pager</div>
-      <div class="link-desc">GridSynth, Data Model, PlateRegistry — interactive</div>
-    </div>
-  </a>
+  <div class="link-grid">
+    <a class="link-card" href="https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/" target="_blank">
+      <div class="link-icon" style="background:var(--accent-dim);">🧬</div>
+      <div>
+        <div class="link-label">Platform Work One-Pager</div>
+        <div class="link-desc">GridSynth, Data Model, PlateRegistry — interactive</div>
+      </div>
+    </a>
 
-  <a class="link-card" href="https://github.com/rgreenbio/ab-discovery-data-model" target="_blank">
-    <div class="link-icon" style="background:#3b82f622;">📐</div>
-    <div>
-      <div class="link-label">Antibody Discovery Data Model</div>
-      <div class="link-desc">Relational schema, seed data, SQL demo queries</div>
-    </div>
-  </a>
+    <a class="link-card" href="https://github.com/rgreenbio/ab-discovery-data-model" target="_blank">
+      <div class="link-icon" style="background:#3b82f622;">📐</div>
+      <div>
+        <div class="link-label">Antibody Discovery Data Model</div>
+        <div class="link-desc">Relational schema, seed data, SQL demo queries</div>
+      </div>
+    </a>
 
-  <a class="link-card" href="https://github.com/rgreenbio/PlateRegistry" target="_blank">
-    <div class="link-icon" style="background:#f9731622;">🧫</div>
-    <div>
-      <div class="link-label">PlateRegistry</div>
-      <div class="link-desc">Well-level experimental data infrastructure</div>
-    </div>
-  </a>
+    <a class="link-card" href="https://github.com/rgreenbio/PlateRegistry" target="_blank">
+      <div class="link-icon" style="background:#f9731622;">🧫</div>
+      <div>
+        <div class="link-label">PlateRegistry</div>
+        <div class="link-desc">Well-level experimental data infrastructure</div>
+      </div>
+    </a>
 
-  <a class="link-card" href="https://github.com/rgreenbio" target="_blank">
-    <div class="link-icon" style="background:#a855f722;">🐙</div>
-    <div>
-      <div class="link-label">GitHub — rgreenbio</div>
-      <div class="link-desc">All open-source tools, platform code, notebooks</div>
-    </div>
-  </a>
+    <a class="link-card" href="https://github.com/rgreenbio" target="_blank">
+      <div class="link-icon" style="background:#a855f722;">🐙</div>
+      <div>
+        <div class="link-label">GitHub — rgreenbio</div>
+        <div class="link-desc">All open-source tools, platform code, notebooks</div>
+      </div>
+    </a>
+  </div>
 
   <!-- CV SNAPSHOT -->
   <div class="section-label">CV Snapshot</div>
 
+  <div class="cv-grid">
   <div class="cv-section">
     <h3>Experience</h3>
     <div class="cv-entry">
@@ -443,19 +478,11 @@
       <a href="https://patents.google.com/patent/US12473560B2/en" target="_blank" style="color:var(--text); text-decoration:none;"><strong>US 12,473,560</strong></a> <span class="pub-year">Granted November 2025</span> — SARS-CoV-2 antigen-binding molecules
     </div>
   </div>
-
-  <!-- DOWNLOAD CV -->
-  <a class="link-card" href="https://rgreenbio.com/static/Robin_Green_CV.pdf" target="_blank" style="margin-top:16px; border-color:var(--accent); background:var(--accent-dim);">
-    <div class="link-icon" style="background:var(--accent-dim);">📄</div>
-    <div>
-      <div class="link-label" style="color:var(--accent);">Download Full CV (PDF)</div>
-      <div class="link-desc">Complete academic and industry CV</div>
-    </div>
-  </a>
+  </div>
 
   <div class="footer">
     Robin Green · March 2026<br>
-    <a href="https://rgreenbio.com">rgreenbio.com</a>
+    <a href="mailto:robin@rgreenbio.com">robin@rgreenbio.com</a>
   </div>
 
 </div>
