@@ -620,40 +620,6 @@
     <li><span class="check" style="color:var(--red);">✗</span> <span>Cross-CRO drift becoming invisible — no structured way to compare external vs. internal data</span></li>
   </ul>
 
-  <h3>The Entity Graph</h3>
-  <p class="muted" style="font-size: 12px; margin-bottom: 8px;">Simplified view of the full 12-entity model</p>
-  <div class="entity-graph">
-    <div class="entity-node">
-      <div class="e-icon" style="background:#3b82f622; color:var(--blue);">🔬</div>
-      <div><div class="e-name">Discovery Campaign</div><div class="e-desc">Antigen, donor, sorting strategy</div></div>
-    </div>
-    <div class="entity-edge">↓</div>
-    <div class="entity-node">
-      <div class="e-icon" style="background:#22c55e22; color:var(--accent);">🧬</div>
-      <div><div class="e-name">Sequence</div><div class="e-desc">V-gene, CDR3, paired HC/LC, NGS lineage</div></div>
-    </div>
-    <div class="entity-edge">↓</div>
-    <div class="entity-node">
-      <div class="e-icon" style="background:#f9731622; color:var(--orange);">🧪</div>
-      <div><div class="e-name">Construct</div><div class="e-desc">Codon-optimized DNA, cloning strategy, vector</div></div>
-    </div>
-    <div class="entity-edge">↓</div>
-    <div class="entity-node">
-      <div class="e-icon" style="background:#a855f722; color:var(--purple);">📦</div>
-      <div><div class="e-name">Production Batch</div><div class="e-desc">Transfection plate, yield, purification</div></div>
-    </div>
-    <div class="entity-edge">↓</div>
-    <div class="entity-node">
-      <div class="e-icon" style="background:#eab30822; color:var(--yellow);">📊</div>
-      <div><div class="e-name">Assay Result</div><div class="e-desc">Binding, function, specificity, developability</div></div>
-    </div>
-    <div class="entity-edge">↓</div>
-    <div class="entity-node">
-      <div class="e-icon" style="background:#ef444422; color:var(--red);">✅</div>
-      <div><div class="e-name">Decision</div><div class="e-desc">Lead selection, advancement, kill</div></div>
-    </div>
-  </div>
-
   <h3>Full Entity Graph</h3>
   <p class="muted" style="font-size: 12px; margin-bottom: 12px;">Complete 14-entity relational schema with primary keys, foreign keys, and all bidirectional relations</p>
   <div style="background:#0d1117; border:1px solid var(--border); border-radius:12px; overflow:hidden;">
@@ -778,6 +744,40 @@ DEFERRED (v4):
   │  (deferred node)  │  Will link to Antibody + AntibodyBatch
   └─ ─ ─ ─ ─ ─ ─ ─ ─┘
 ────────────────────────────────────────────────────────────────────────────────</pre>
+    </div>
+  </div>
+
+  <h3>The Entity Graph</h3>
+  <p class="muted" style="font-size: 12px; margin-bottom: 8px;">Simplified view of the full 12-entity model</p>
+  <div class="entity-graph">
+    <div class="entity-node">
+      <div class="e-icon" style="background:#3b82f622; color:var(--blue);">🔬</div>
+      <div><div class="e-name">Discovery Campaign</div><div class="e-desc">Antigen, donor, sorting strategy</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#22c55e22; color:var(--accent);">🧬</div>
+      <div><div class="e-name">Sequence</div><div class="e-desc">V-gene, CDR3, paired HC/LC, NGS lineage</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#f9731622; color:var(--orange);">🧪</div>
+      <div><div class="e-name">Construct</div><div class="e-desc">Codon-optimized DNA, cloning strategy, vector</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#a855f722; color:var(--purple);">📦</div>
+      <div><div class="e-name">Production Batch</div><div class="e-desc">Transfection plate, yield, purification</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#eab30822; color:var(--yellow);">📊</div>
+      <div><div class="e-name">Assay Result</div><div class="e-desc">Binding, function, specificity, developability</div></div>
+    </div>
+    <div class="entity-edge">↓</div>
+    <div class="entity-node">
+      <div class="e-icon" style="background:#ef444422; color:var(--red);">✅</div>
+      <div><div class="e-name">Decision</div><div class="e-desc">Lead selection, advancement, kill</div></div>
     </div>
   </div>
 
