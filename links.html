@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Robin Green — Links</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Robin Green — Platform Builder</title>
+<meta name="description" content="Robin Green — Synthetic biology platform builder. CV, portfolio, and contact.">
 <style>
   :root {
     --bg: #0a0a0a;
     --surface: #141414;
+    --surface2: #1e1e1e;
     --border: #2a2a2a;
     --text: #e8e8e8;
     --text-muted: #888;
     --accent: #4ade80;
     --accent-dim: #22c55e33;
+    --accent-bright: #86efac;
+    --blue: #60a5fa;
+    --orange: #fb923c;
+    --purple: #c084fc;
+    --red: #f87171;
+    --yellow: #fbbf24;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,36 +31,127 @@
     color: var(--text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+    padding: 0 0 60px;
   }
 
   .container {
-    max-width: 400px;
-    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
-  .header {
+  /* --- HERO --- */
+  .hero {
     text-align: center;
-    margin-bottom: 32px;
+    padding: 48px 20px 32px;
   }
 
-  .header h1 {
-    font-size: 24px;
+  .hero-photo {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-dim);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 4px;
   }
 
-  .header .subtitle {
-    font-size: 14px;
+  .hero .subtitle {
+    font-size: 15px;
     color: var(--accent);
     font-weight: 500;
+    margin-bottom: 8px;
   }
 
+  .hero .tagline {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 340px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* --- SECTION LABELS --- */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 28px 0 12px;
+    padding-left: 2px;
+  }
+
+  /* --- STAT ROW --- */
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-card .number {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-card .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .green { color: var(--accent); }
+  .blue { color: var(--blue); }
+  .purple { color: var(--purple); }
+  .orange { color: var(--orange); }
+
+  /* --- CREDENTIAL PILLS --- */
+  .cred-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .cred-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .cred-pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* --- LINK CARDS --- */
   .link-card {
     display: flex;
     align-items: center;
@@ -60,16 +159,16 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 16px 20px;
+    padding: 14px 18px;
     margin-bottom: 10px;
     text-decoration: none;
     color: var(--text);
     transition: border-color 0.2s, background 0.2s;
   }
 
-  .link-card:hover {
+  .link-card:hover, .link-card:active {
     border-color: var(--accent);
-    background: #1a1a1a;
+    background: var(--surface2);
   }
 
   .link-icon {
@@ -81,7 +180,6 @@
     justify-content: center;
     font-size: 18px;
     flex-shrink: 0;
-    background: var(--accent-dim);
   }
 
   .link-label {
@@ -95,70 +193,264 @@
     margin-top: 1px;
   }
 
-  .footer-note {
-    text-align: center;
-    margin-top: 32px;
+  /* --- CV SNAPSHOT --- */
+  .cv-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 10px;
+  }
+
+  .cv-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--accent-bright);
+  }
+
+  .cv-entry {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cv-entry:last-child { border-bottom: none; }
+
+  .cv-role {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .cv-org {
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .cv-dates {
     font-size: 12px;
     color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .cv-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* --- PUBLICATIONS --- */
+  .pub-item {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .pub-item:last-child { border-bottom: none; }
+
+  .pub-journal {
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .pub-year {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* --- FOOTER --- */
+  .footer {
+    text-align: center;
+    padding: 36px 20px 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
   }
 </style>
 </head>
 <body>
 
+<!-- HERO -->
+<div class="hero">
+  <img src="robin-green.jpg" alt="Robin Green" class="hero-photo">
+  <h1>Robin Green</h1>
+  <div class="subtitle">Synthetic Biology Platform Builder</div>
+  <div class="tagline">I design the technical systems that turn biological designs into decision-grade experimental data at scale.</div>
+</div>
+
 <div class="container">
-  <div class="header">
-    <h1>Robin Green</h1>
-    <div class="subtitle">Synthetic Biology Platform Builder</div>
+
+  <!-- QUICK STATS -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="number green">~1,000</div>
+      <div class="label">IgGs / week capacity</div>
+    </div>
+    <div class="stat-card">
+      <div class="number blue">1,200</div>
+      <div class="label">Transfections / week</div>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="number purple">6</div>
+      <div class="label">Publications (Nature, Science)</div>
+    </div>
+    <div class="stat-card">
+      <div class="number orange">1</div>
+      <div class="label">US Patent Issued</div>
+    </div>
   </div>
 
-  <!-- ============================================================
-       UPDATE THESE LINKS AS NEEDED
-       CV_PDF_URL: Direct link to your CV PDF
-       ============================================================ -->
+  <!-- CREDENTIALS -->
+  <div class="cred-list">
+    <div class="cred-pill"><span class="dot" style="background:var(--accent);"></span>NSF GRFP Fellow</div>
+    <div class="cred-pill"><span class="dot" style="background:var(--blue);"></span>PhD, U of Michigan</div>
+    <div class="cred-pill"><span class="dot" style="background:var(--purple);"></span>Inventorship Award</div>
+    <div class="cred-pill"><span class="dot" style="background:var(--orange);"></span>100% Team Retention</div>
+  </div>
 
-  <a class="link-card" href="https://rgreenbio.com/static/Robin_Green_CV.pdf" target="_blank">
-    <div class="link-icon">📄</div>
-    <div>
-      <div class="link-label">Download CV</div>
-      <div class="link-desc">PDF — full academic and industry CV</div>
-    </div>
-  </a>
+  <!-- CONTACT -->
+  <div class="section-label">Get in Touch</div>
 
-  <a class="link-card" href="https://rgreenbio.com/" target="_blank">
-    <div class="link-icon">🌐</div>
+  <a class="link-card" href="mailto:robin@rgreenbio.com">
+    <div class="link-icon" style="background:var(--accent-dim);">✉️</div>
     <div>
-      <div class="link-label">Portfolio</div>
-      <div class="link-desc">rgreenbio.com — work, writing, case studies</div>
-    </div>
-  </a>
-
-  <a class="link-card" href="https://github.com/rgreenbio" target="_blank">
-    <div class="link-icon">💻</div>
-    <div>
-      <div class="link-label">GitHub</div>
-      <div class="link-desc">Open-source tools and platform code</div>
+      <div class="link-label">robin@rgreenbio.com</div>
+      <div class="link-desc">Preferred contact — open to opportunities</div>
     </div>
   </a>
 
   <a class="link-card" href="https://linkedin.com/in/robin-green-phd-166b8216" target="_blank">
-    <div class="link-icon">🔗</div>
+    <div class="link-icon" style="background:#3b82f622;">💼</div>
     <div>
       <div class="link-label">LinkedIn</div>
-      <div class="link-desc">Professional profile and publications</div>
+      <div class="link-desc">robin-green-phd — professional profile</div>
     </div>
   </a>
 
-  <a class="link-card" href="mailto:robin@rgreenbio.com">
-    <div class="link-icon">✉️</div>
+  <a class="link-card" href="https://rgreenbio.com" target="_blank">
+    <div class="link-icon" style="background:#f9731622;">🌐</div>
     <div>
-      <div class="link-label">Email</div>
-      <div class="link-desc">robin@rgreenbio.com</div>
+      <div class="link-label">rgreenbio.com</div>
+      <div class="link-desc">Full portfolio, case studies, writing</div>
     </div>
   </a>
 
-  <div class="footer-note">
-    Robin Green · March 2026
+  <!-- PORTFOLIO ARTIFACTS -->
+  <div class="section-label">Portfolio Artifacts</div>
+
+  <a class="link-card" href="https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/" target="_blank">
+    <div class="link-icon" style="background:var(--accent-dim);">🧬</div>
+    <div>
+      <div class="link-label">Platform Work One-Pager</div>
+      <div class="link-desc">GridSynth, Data Model, PlateRegistry — interactive</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://github.com/rgreenbio/ab-discovery-data-model" target="_blank">
+    <div class="link-icon" style="background:#3b82f622;">📐</div>
+    <div>
+      <div class="link-label">Antibody Discovery Data Model</div>
+      <div class="link-desc">Relational schema, seed data, SQL demo queries</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://github.com/rgreenbio/PlateRegistry" target="_blank">
+    <div class="link-icon" style="background:#f9731622;">🧫</div>
+    <div>
+      <div class="link-label">PlateRegistry</div>
+      <div class="link-desc">Well-level experimental data infrastructure</div>
+    </div>
+  </a>
+
+  <a class="link-card" href="https://github.com/rgreenbio" target="_blank">
+    <div class="link-icon" style="background:#a855f722;">🐙</div>
+    <div>
+      <div class="link-label">GitHub — rgreenbio</div>
+      <div class="link-desc">All open-source tools, platform code, notebooks</div>
+    </div>
+  </a>
+
+  <!-- CV SNAPSHOT -->
+  <div class="section-label">CV Snapshot</div>
+
+  <div class="cv-section">
+    <h3>Experience</h3>
+    <div class="cv-entry">
+      <div class="cv-role">Senior Scientist, Protein Sciences & Platform Lead</div>
+      <div class="cv-org">Prellis Biologics</div>
+      <div class="cv-dates">2023 – 2025</div>
+      <div class="cv-detail">Built and led 3–9 FTE teams. Scaled antibody production to ~400/wk. Managed 10+ CRO campaigns. Established end-to-end DNA-to-protein platform with integrated data infrastructure.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-role">Scientist II, Biofoundry & Protein Sciences</div>
+      <div class="cv-org">Generate Biomedicines</div>
+      <div class="cv-dates">2020 – 2023</div>
+      <div class="cv-detail">Led 6-FTE team supporting 1,200 weekly transfections. 6 promotions, 100% retention over 3 years. Modality-agnostic cloning platform development. Bispecific/multispecific protein production.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-role">Postdoctoral Research Fellow</div>
+      <div class="cv-org">Fred Hutchinson Cancer Center (Matsen Lab)</div>
+      <div class="cv-dates">2018 – 2020</div>
+      <div class="cv-detail">Computational and experimental work in antibody repertoire analysis and B cell biology.</div>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-role">PhD, Ecology & Evolutionary Biology</div>
+      <div class="cv-org">University of Michigan</div>
+      <div class="cv-dates">2013 – 2018</div>
+      <div class="cv-detail">NSF GRFP Fellow. Microbial community modeling, metabolic evolution, and quantitative biology.</div>
+    </div>
   </div>
+
+  <div class="cv-section">
+    <h3>Selected Publications</h3>
+    <div class="pub-item">
+      <span class="pub-journal">Nature</span> <span class="pub-year">2023</span> — Illuminating protein space with a programmable generative model
+    </div>
+    <div class="pub-item">
+      <span class="pub-journal">Science</span> <span class="pub-year">2021</span> — Variant-resistant SARS-CoV-2 antibody epitopes
+    </div>
+    <div class="pub-item">
+      <span class="pub-journal">PLoS Biology</span> <span class="pub-year">2020</span> — Metabolic excretion and nutrient-growth dysregulation <em>(first author)</em>
+    </div>
+    <div class="pub-item">
+      <span class="pub-journal">PLoS Biology</span> <span class="pub-year">2019</span> — Microbial community dynamics
+    </div>
+    <div class="pub-item">
+      <span class="pub-journal">eLife</span> <span class="pub-year">2019</span> — Mutualistic evolution
+    </div>
+    <div class="pub-item">
+      <span class="pub-journal">PLoS One</span> <span class="pub-year">2015</span> — Hydrogen metabolism in <em>Volvox carteri</em>
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <h3>Patent</h3>
+    <div class="pub-item">
+      <strong>US 11,981,725</strong> <span class="pub-year">Issued May 2024</span> — SARS-CoV-2 antigen-binding molecules
+    </div>
+  </div>
+
+  <!-- DOWNLOAD CV -->
+  <a class="link-card" href="https://rgreenbio.com/static/Robin_Green_CV.pdf" target="_blank" style="margin-top:16px; border-color:var(--accent); background:var(--accent-dim);">
+    <div class="link-icon" style="background:var(--accent-dim);">📄</div>
+    <div>
+      <div class="link-label" style="color:var(--accent);">Download Full CV (PDF)</div>
+      <div class="link-desc">Complete academic and industry CV</div>
+    </div>
+  </a>
+
+  <div class="footer">
+    Robin Green · March 2026<br>
+    <a href="https://rgreenbio.com">rgreenbio.com</a>
+  </div>
+
 </div>
 
 </body>
