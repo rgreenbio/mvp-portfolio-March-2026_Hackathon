@@ -310,9 +310,23 @@
     .cv-grid { grid-template-columns: 1fr; }
     .container { padding: 0 16px; }
   }
+
+  .back-link {
+    position: fixed;
+    top: 16px;
+    left: 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    z-index: 10;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--accent); }
 </style>
 </head>
 <body>
+
+<a class="back-link" href="index.html">&larr; Back to portfolio</a>
 
 <!-- HERO -->
 <div class="hero">
@@ -395,6 +409,14 @@
       </div>
     </a>
 
+    <a class="link-card" href="https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/demo-gridsynth.html" target="_blank">
+      <div class="link-icon" style="background:#22c55e22;">⚡</div>
+      <div>
+        <div class="link-label">GridSynth — Live Demo</div>
+        <div class="link-desc">DNA synthesis grid scheduling simulator</div>
+      </div>
+    </a>
+
     <a class="link-card" href="https://github.com/rgreenbio/ab-discovery-data-model" target="_blank">
       <div class="link-icon" style="background:#3b82f622;">📐</div>
       <div>
@@ -416,6 +438,19 @@
       <div>
         <div class="link-label">GitHub — rgreenbio</div>
         <div class="link-desc">All open-source tools, platform code, notebooks</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- FOR FUN -->
+  <div class="section-label">For Fun</div>
+
+  <div class="link-grid">
+    <a class="link-card" href="demo-ascii-starwars.html" target="_blank">
+      <div class="link-icon" style="background:#fbbf2422;">🎬</div>
+      <div>
+        <div class="link-label">ASCII Star Wars</div>
+        <div class="link-desc">The Empire Strikes Back — "I am your father" in the terminal</div>
       </div>
     </a>
   </div>
