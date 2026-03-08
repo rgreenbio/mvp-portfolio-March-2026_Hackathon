@@ -413,7 +413,7 @@
     <div class="nav-tab" onclick="showSection('plateregistry')">PlateRegistry</div>
     <div class="nav-tab" onclick="showSection('about')">About</div>
     <div class="nav-tab" onclick="showSection('forfun')">For Fun</div>
-    <div class="nav-tab" onclick="showSection('qr')" style="color:var(--accent);">Share</div>
+    <div class="nav-tab" onclick="showSection('qr')" style="margin-left:auto; color:var(--accent);">Share</div>
   </div>
 </nav>
 
@@ -875,7 +875,7 @@ function showSection(id) {
   document.getElementById(id).classList.add('active');
 
   const tabs = document.querySelectorAll('.nav-tab');
-  const names = ['home', 'gridsynth', 'datamodel', 'plateregistry', 'about', 'qr'];
+  const names = ['home', 'gridsynth', 'datamodel', 'plateregistry', 'about', 'forfun', 'qr'];
   const idx = names.indexOf(id);
   if (idx >= 0) tabs[idx].classList.add('active');
 
