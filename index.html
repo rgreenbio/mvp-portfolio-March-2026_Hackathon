@@ -412,6 +412,7 @@
     <div class="nav-tab" onclick="showSection('datamodel')">Data Model</div>
     <div class="nav-tab" onclick="showSection('plateregistry')">PlateRegistry</div>
     <div class="nav-tab" onclick="showSection('about')">About</div>
+    <div class="nav-tab" onclick="showSection('qr')" style="color:var(--accent);">Share</div>
   </div>
 </nav>
 
@@ -821,13 +822,16 @@
   </div>
 </div>
 
-<!-- QR TAKEAWAY -->
-<div style="display:flex; align-items:center; gap:20px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin:32px 20px 0;">
-  <canvas id="qr-canvas" style="width:100px; height:100px; flex-shrink:0; border-radius:6px;"></canvas>
-  <div style="flex:1; min-width:0;">
-    <div style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:4px;">Scan for CV + portfolio</div>
-    <div style="font-size:12px; color:var(--text-muted); line-height:1.5; margin-bottom:10px;">Open on your phone to keep Robin's CV, GitHub, and links.</div>
-    <a id="qr-direct-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--accent); text-decoration:none; font-weight:500; opacity:0.85;">Open links page →</a>
+<!-- ==================== SHARE / QR ==================== -->
+<div id="qr" class="section">
+  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; text-align:center; padding:40px 20px;">
+    <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); margin-bottom:12px;">Scan to connect</div>
+    <h2 style="font-size:24px; margin-bottom:8px;">Save my info</h2>
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:32px; max-width:360px;">Scan with your phone camera to open my digital business card — CV, contact, GitHub, and portfolio links.</p>
+    <div style="background:#fff; padding:24px; border-radius:16px; display:inline-block; margin-bottom:24px;">
+      <canvas id="qr-canvas" style="width:200px; height:200px; display:block;"></canvas>
+    </div>
+    <a id="qr-direct-link" href="#" target="_blank" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--accent); text-decoration:none; font-weight:500;">Or open directly →</a>
   </div>
 </div>
 
@@ -843,7 +847,7 @@ function showSection(id) {
   document.getElementById(id).classList.add('active');
 
   const tabs = document.querySelectorAll('.nav-tab');
-  const names = ['home', 'gridsynth', 'datamodel', 'plateregistry', 'about'];
+  const names = ['home', 'gridsynth', 'datamodel', 'plateregistry', 'about', 'qr'];
   const idx = names.indexOf(id);
   if (idx >= 0) tabs[idx].classList.add('active');
 
