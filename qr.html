@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Robin QR">
+<title>Robin Green — QR</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #000;
+    color: #e8e8e8;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    min-height: 100vh;
+    padding: 32px 20px;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #4ade80;
+    margin-bottom: 16px;
+  }
+  .name {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .role {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 28px;
+  }
+  .qr-frame {
+    background: #fff;
+    padding: 24px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 28px;
+    box-shadow: 0 0 60px rgba(74, 222, 128, 0.08);
+  }
+  canvas {
+    display: block;
+    width: 220px;
+    height: 220px;
+  }
+  .hint {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .hint a {
+    color: #4ade80;
+    text-decoration: none;
+  }
+  @media (max-width: 380px) {
+    canvas { width: 180px; height: 180px; }
+    .qr-frame { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="label">Scan to connect</div>
+<div class="name">Robin Green</div>
+<div class="role">Synthetic Biology Platform Builder</div>
+
+<div class="qr-frame">
+  <canvas id="qr"></canvas>
+</div>
+
+<div class="hint">
+  Scan with your phone camera<br>
+  <a id="direct" href="#">or tap to open →</a>
+</div>
+
+<script>
+const URL = "https://rgreenbio.github.io/mvp-portfolio-March-2026_Hackathon/links.html";
+document.getElementById('direct').href = URL;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/qr-creator@1.0.0/dist/qr-creator.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof QrCreator !== 'undefined') {
+    QrCreator.render({
+      text: URL,
+      radius: 0.0,
+      ecLevel: 'M',
+      fill: '#111111',
+      background: '#ffffff',
+      size: 280
+    }, document.getElementById('qr'));
+  }
+});
+</script>
+
+</body>
+</html>
