@@ -934,8 +934,9 @@ function replay() {
   runScene();
 }
 
-// Show title card on load
+// Autoplay on load
 show(TITLE);
+setTimeout(() => runScene(), 500);
 </script>
 
 </body>
