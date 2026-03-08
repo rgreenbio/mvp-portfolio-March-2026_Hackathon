@@ -412,6 +412,7 @@
     <div class="nav-tab" onclick="showSection('datamodel')">Data Model</div>
     <div class="nav-tab" onclick="showSection('plateregistry')">PlateRegistry</div>
     <div class="nav-tab" onclick="showSection('about')">About</div>
+    <div class="nav-tab" onclick="showSection('forfun')">For Fun</div>
     <div class="nav-tab" onclick="showSection('qr')" style="color:var(--accent);">Share</div>
   </div>
 </nav>
@@ -817,12 +818,36 @@
         <span style="width:36px; height:36px; border-radius:8px; background:#a855f722; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">🐙</span>
         <span><strong>GitHub</strong> <span style="color:var(--text-muted); font-size:12px;">— rgreenbio</span></span>
       </a>
+      <a href="https://scholar.google.com/citations?user=AlJH6PoAAAAJ&hl=en" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); font-size:14px; transition:color 0.2s;" onmouseover="this.style.color='var(--orange)'" onmouseout="this.style.color='var(--text)'">
+        <span style="width:36px; height:36px; border-radius:8px; background:#f9731622; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;">🎓</span>
+        <span><strong>Google Scholar</strong> <span style="color:var(--text-muted); font-size:12px;">— publications &amp; citations</span></span>
+      </a>
     </div>
   </div>
 
   <div class="callout">
     <strong>Open to:</strong> Consulting, advisory, fractional leadership, and full-time opportunities in biotech platform leadership and scientific infrastructure. Let's talk.
   </div>
+
+</div>
+
+<!-- ==================== FOR FUN ==================== -->
+<div id="forfun" class="section" style="display:none;">
+  <h2 class="section-title">For Fun</h2>
+  <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px; max-width:600px;">Sometimes you build things just because you can. These are projects made for the joy of making.</p>
+
+  <div style="max-width:700px;">
+    <a href="demo-ascii-starwars.html" target="_blank" style="display:flex; align-items:center; gap:16px; text-decoration:none; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 24px; transition:border-color 0.2s, background 0.2s;" onmouseover="this.style.borderColor='var(--accent)';this.style.background='var(--surface2)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--surface)'">
+      <span style="font-size:36px;">🎬</span>
+      <div>
+        <div style="font-size:16px; font-weight:700; color:var(--accent); margin-bottom:4px;">ASCII Star Wars</div>
+        <div style="font-size:13px; color:var(--text-muted); line-height:1.5;">The Empire Strikes Back — "I am your father" scene, rendered as a frame-by-frame ASCII animation in a terminal emulator. Originally a Python script, ported to the web. Play it, or skip straight to the reveal.</div>
+      </div>
+      <span style="font-size:18px; color:var(--text-muted); flex-shrink:0;">&#8599;</span>
+    </a>
+  </div>
+
+  <p style="color:var(--text-muted); font-size:12px; margin-top:20px; font-style:italic;">Made with Python & too much free time.</p>
 </div>
 
 <!-- ==================== SHARE / QR ==================== -->

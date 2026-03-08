@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASCII Star Wars — Robin Green</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --terminal-bg: #0d1117;
+    --green: #4ade80;
+    --green-dim: #22c55e66;
+    --green-bright: #86efac;
+    --text-muted: #555;
+    --border: #1e2a1e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--green);
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .back-link {
+    position: fixed;
+    top: 16px;
+    left: 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    z-index: 10;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--green); }
+
+  .terminal {
+    background: var(--terminal-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    max-width: 780px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(74, 222, 128, 0.05);
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #161b22;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .terminal-body {
+    padding: 16px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  #screen {
+    white-space: pre;
+    font-size: 10.5px;
+    line-height: 1.35;
+    color: var(--green);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  #screen.bright {
+    color: var(--green-bright);
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+  }
+
+  #dialogue {
+    font-size: 13px;
+    color: var(--green-bright);
+    text-align: center;
+    margin-top: 8px;
+    min-height: 20px;
+    text-shadow: 0 0 6px rgba(74, 222, 128, 0.3);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    background: #161b22;
+  }
+
+  .ctrl-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--green);
+    padding: 6px 18px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .ctrl-btn:hover {
+    background: var(--green-dim);
+    border-color: var(--green);
+  }
+
+  .ctrl-btn.active {
+    background: var(--green-dim);
+    border-color: var(--green);
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    width: 0%;
+    transition: width 0.3s linear;
+  }
+
+  .credit {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .credit a { color: var(--green); text-decoration: none; }
+  .credit a:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    #screen { font-size: 6px; line-height: 1.2; }
+    .terminal-body { min-height: 320px; padding: 8px; }
+    #dialogue { font-size: 11px; }
+  }
+
+  @media (min-width: 601px) and (max-width: 800px) {
+    #screen { font-size: 8.5px; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">&larr; Back to portfolio</a>
+
+<div class="terminal">
+  <div class="terminal-bar">
+    <div class="terminal-dot" style="background:#ff5f57;"></div>
+    <div class="terminal-dot" style="background:#febc2e;"></div>
+    <div class="terminal-dot" style="background:#28c840;"></div>
+    <div class="terminal-title">ascii-vader.py — python3</div>
+    <div style="width: 44px;"></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+  <div class="terminal-body">
+    <div id="screen"></div>
+    <div id="dialogue"></div>
+  </div>
+  <div class="controls">
+    <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">&#9654; Play</button>
+    <button class="ctrl-btn" id="skipBtn" onclick="skipToReveal()">Skip to reveal</button>
+    <button class="ctrl-btn" id="replayBtn" onclick="replay()" style="display:none;">&#8634; Replay</button>
+  </div>
+</div>
+
+<div class="credit">
+  Made with Python & too much free time &middot; <a href="https://github.com/rgreenbio" target="_blank">rgreenbio</a>
+</div>
+
+<script>
+// ============================================================
+//  ASCII Star Wars - "I am your father" — Web Terminal Port
+//  Original: ascii-vader.py by Robin Green
+// ============================================================
+
+const screen = document.getElementById('screen');
+const dialogue = document.getElementById('dialogue');
+const progress = document.getElementById('progress');
+const playBtn = document.getElementById('playBtn');
+const skipBtn = document.getElementById('skipBtn');
+const replayBtn = document.getElementById('replayBtn');
+
+let playing = false;
+let aborted = false;
+let animationHandle = null;
+const TOTAL_STEPS = 22;
+let currentStep = 0;
+
+function sleep(ms) {
+  return new Promise(resolve => {
+    animationHandle = setTimeout(resolve, ms);
+  });
+}
+
+function setProgress(step) {
+  currentStep = step;
+  progress.style.width = ((step / TOTAL_STEPS) * 100) + '%';
+}
+
+function show(frame) {
+  screen.textContent = frame;
+  dialogue.textContent = '';
+}
+
+async function typewriter(frame, text, charDelay = 40) {
+  screen.textContent = frame;
+  dialogue.textContent = '';
+  for (let i = 0; i < text.length; i++) {
+    if (aborted) return;
+    dialogue.textContent = text.slice(0, i + 1);
+    await sleep(charDelay);
+  }
+}
+
+async function flicker(frame, times = 2, duration = 120) {
+  for (let t = 0; t < times; t++) {
+    if (aborted) return;
+    // dim version
+    let dimmed = '';
+    for (const ch of frame) {
+      if (ch !== ' ' && ch !== '\n' && ch !== '_' && ch !== '|' && Math.random() < 0.3) {
+        dimmed += ' ';
+      } else {
+        dimmed += ch;
+      }
+    }
+    screen.textContent = dimmed;
+    screen.classList.remove('bright');
+    await sleep(duration / 2);
+    screen.textContent = frame;
+    screen.classList.add('bright');
+    await sleep(duration / 2);
+  }
+  screen.classList.remove('bright');
+}
+
+// ---- FRAMES ----
+
+const TITLE = `
+
+                 _____ _  _ ___   ___ __  __ ___ ___ ___ ___
+                |_   _| || | __| | __|  \\/  | _ \\_ _| _ \\ __|
+                  | | | __ | _|  | _|| |\\/| |  _/| ||   / _|
+                  |_| |_||_|___| |___|_|  |_|_| |___|_|_\\___|
+
+              ___ _____ ___ ___ _  _____ ___   ___   _   ___ _  __
+             / __|_   _| _ \\_ _| |/ / __/ __| | _ ) /_\\ / __| |/ /
+             \\__ \\ | | |   /| ||  <| _|\\__ \\ | _ \\/ _ \\ (__| ' <
+             |___/ |_| |_|_\\___|_|\\_\\___|___/ |___/_/ \\_\\___|_|\\_\\
+
+
+                           A long time ago...
+                      in a galaxy far, far away...`;
+
+const EST1 = `
+          ____________________________________________________
+         /          |     |          |     |          |        \\
+        /     |     |     |     |    |     |     |    |     |   \\
+       |------+-----+-----+----+----+-----+-----+----+------+---|
+       |      |           |         |           |          |     |
+       |  |   |     |     |    |    |     |     |    |     |  |  |
+       |      |           |         |           |          |     |
+       |--+---|-----+-----|----+----|-----+-----|----+-----|--+--|
+       |      |           |         |           |          |     |
+       |      |     |     |    |    |     |     |    |     |     |
+       |  |   |           |         |           |          |  |  |
+       |      |     |     |    |    |     |     |    |     |     |
+       |------+-----+=====+==========+=====+-----+------+-------|
+       |              ____[  GANTRY  ]____                       |
+       |             /                    \\                       |
+       |            /                      \\                      |
+       |                                                         |
+       |                   \\            /                         |
+       |                    \\          /                          |
+       |                     \\________/                          |
+       |                      REACTOR                            |
+        \\                      SHAFT                            /
+         \\____________________________________________________/`;
+
+const GANTRY1 = `
+       |          |                                      |          |
+       |          |       .     *     .        .         |          |
+       |    |     |                                      |     |    |
+       |          |                                      |          |
+       |    |     |     ___.                       o     |     |    |
+       |          |    / _ \\                      /|\\    |          |
+       |    |     |   | |_| |                      |     |     |    |
+       |          |   |  V  |                     / \\    |          |
+       |    |     |    \\===/ VADER           LUKE        |     |    |
+       |          |     | |                              |          |
+       |==========+=====|=|==============================+==========|
+       |                | |                                         |
+       |               /| |\\                                        |
+       |                                                            |
+       |              \\          /                                   |
+       |               \\        /                                    |
+       |                \\______/                                     |
+       |                                                             |
+        \\                   REACTOR  SHAFT                          /
+         \\_________________________________________________________/`;
+
+const CLASH = `
+       |          |                                      |          |
+       |          |    .     *              *             |          |
+       |    |     |                                      |     |    |
+       |          |                                      |          |
+       |    |     |     ___.                     _/      |     |    |
+       |          |    / _ \\                    |        |          |
+       |    |     |   | |_| |                   /\\      |     |    |
+       |          |   |  V  |                              |          |
+       |    |     |    \\===/ VADER                LUKE   |     |    |
+       |          |     | |                              |          |
+       |==========+=====|=|==============================+==========|
+       |                | |                         _               |
+       |               /| |\\                       (_)   <-- hand   |
+       |                                            |               |
+       |                                         . . .              |
+       |               \\        /             .  . . .  .           |
+       |                \\______/           (lightsaber & hand fall) |
+       |                                                            |
+        \\                   REACTOR  SHAFT                         /
+         \\_______________________________________________________/`;
+
+const CRAWL = `
+       |          |                                      |          |
+       |          |                                      |          |
+       |    |     |     ___.                             |     |    |
+       |          |    / _ \\                             |          |
+       |    |     |   | |_| |                            |     |    |
+       |          |   |  V  |                            |          |
+       |    |     |    \\===/                              |     |    |
+       |          |     | |         VADER                 |          |
+       |==========+=====|=|==============+               |==========|
+       |                | |              |                          |
+       |               /| |\\            _/o                         |
+       |                                 |\\ Luke                    |
+       |                                / \\                         |
+       |               \\        /        |                          |
+       |                \\      /         |                          |
+       |                 \\    /     _____|_____                      |
+       |                  \\  /     /  WEATHER  \\                     |
+        \\                  \\/     /    VANE     \\                   /
+         \\_______________________________________________________/`;
+
+const VADER_CLOSE = `
+                         .     *     .        .    *     .
+                    .        .          .           .
+                  _______________________________________________
+                 |                                               |
+                 |                  .------.                     |
+                 |                /   ____   \\                   |
+                 |               |  /|    |\\  |                  |
+                 |               | | |    | | |                  |
+                 |               |  \\| __ |/  |                  |
+                 |               |   |/  \\|   |                  |
+                 |                \\_//||||\\\\./                    |
+                 |                  /|||||||\\                     |
+                 |              ----| |\\/ | |----                 |
+                 |             |  __|_|__|_|__  |                |
+                 |             | |            | |                |
+                 |_____________|_|____________|_|_________________|
+                              ~~~~~~~~~~~~~~~~`;
+
+const LUKE_HANG = `
+            _______________|________________________|_______________
+           |///////////////|  C L O U D   C I T Y   |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   /  \\
+                                   \\  /
+                                    \\/
+                                    ||
+                                   o||  <-- Luke (one hand)
+                                  /\\|_
+                                 /
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~    clouds of Bespin far below   ~~
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+
+const VADER_HAND = `
+                         .     *     .        .    *     .
+                    .        .          .           .
+                  _______________________________________________
+                 |                                               |
+                 |                  .------.                     |
+                 |                /   ____   \\                   |
+                 |               |  /|    |\\  |                  |
+                 |               | | |    | | |                  |
+                 |               |  \\| __ |/  |                  |
+                 |               |   |/  \\|   |                  |
+                 |                \\_//||||\\\\./                    |
+                 |                  /|||||||\\                     |
+                 |              ----| |\\/ | |---======>          |
+                 |             |  __|_|__|_|__  |                |
+                 |             | |            | |                |
+                 |_____________|_|____________|_|_________________|
+                              ~~~~~~~~~~~~~~~~`;
+
+const LUKE_RECOIL = `
+            _______________|________________________|_______________
+           |///////////////|  C L O U D   C I T Y   |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   /  \\
+                                   \\  /
+                                    \\/
+                                    ||
+                                  >o||  <-- Luke
+                                  /\\|_
+                                 /
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~    clouds of Bespin far below   ~~
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+
+const REVEAL = `
+              *    .    *    .    *    .    *    .    *    .    *
+          .    *    .    *    .    *    .    *    .    *    .    *
+                  _______________________________________________
+                 |                                               |
+                 |            *     .------.     *               |
+                 |                /   ____   \\                   |
+                 |           *   |  /|    |\\  |   *              |
+                 |               | | |    | | |                  |
+                 |            *  |  \\| __ |/  |  *               |
+                 |               |   |/  \\|   |                  |
+                 |           *    \\_//||||\\\\./    *               |
+                 |                  /|||||||\\                     |
+                 |            * ---| |\\/ | |---  *               |
+                 |             |  __|_|__|_|__  |                |
+                 |           * | |            | | *              |
+                 |_____________|_|____________|_|_________________|
+                              ~~~~~~~~~~~~~~~~`;
+
+const LUKE_SCREAM = `
+            _______________|________________________|_______________
+           |///////////////|  C L O U D   C I T Y   |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   /  \\
+                                   \\  /
+                                    \\/
+                                    ||
+                                  To||T
+                                  /\\|_
+                                 /
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~    clouds of Bespin far below   ~~
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+
+const LUKE_LET_GO = `
+            _______________|________________________|_______________
+           |///////////////|  C L O U D   C I T Y   |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   /  \\
+                                   \\  /
+                                    \\/
+                                    ||
+                                    ||
+                                    ||
+                                  \\_o_/    Luke lets go...
+                                   /
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+
+const FALL1 = `
+            _______________|________________________|_______________
+           |///////////////|  C L O U D   C I T Y   |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   /  \\
+                                   \\  /
+                                    \\/
+                                    ||
+
+
+
+                                  \\_o_/
+                                   /
+
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+
+const FALL2 = `
+            _______________|________________________|_______________
+           |///////////////|                        |///////////////|
+           |_______________|________________________|_______________|
+                                    |  |
+                                   _|__|_
+                                  /______\\
+                                    |  |
+                                  --|--|--
+                                    /\\
+                                   \\  /
+                                    \\/
+                                    ||
+
+
+
+
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~~~~~~~~~~~~~\\o/~~~~~~~~~~~~~~~~~~
+                                     |
+                                    / \\`;
+
+const FALL3 = `
+            _______________|________________________|_______________
+           |///////////////|                        |///////////////|
+           |_______________|________________________|_______________|
+                                    .
+                                    .
+                                    .
+
+
+
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                               .`;
+
+const END_CARD = `
+              *    .    *    .    *    .    *    .    *    .    *
+
+         .       .       .       .       .       .       .       .
+
+
+
+                   _____ _  _ ___   ___ _  _ ___
+                  |_   _| || | __| | __| \\| |   \\
+                    | | | __ | _|  | _||  \` | |) |
+                    |_| |_||_|___| |___|_|\\_|___/
+
+
+
+                            starring
+
+                 DARTH VADER  ........  himself
+                 LUKE  ...............  himself
+                 THE ABYSS  ..........  itself
+
+
+              *    .    *    .    *    .    *    .    *    .    *
+
+         .       .       .       .       .       .       .       .
+
+
+                   made with Python & too much free time`;
+
+
+// ---- SCENE RUNNER ----
+
+async function runScene() {
+  playing = true;
+  aborted = false;
+  playBtn.textContent = '⏸ Pause';
+  playBtn.classList.add('active');
+  skipBtn.style.display = '';
+  replayBtn.style.display = 'none';
+
+  try {
+    // 1 - Title
+    setProgress(1);
+    show(TITLE);
+    await sleep(3500);
+    if (aborted) return;
+
+    // 2 - Establishing shot
+    setProgress(2);
+    show(EST1);
+    await sleep(3000);
+    if (aborted) return;
+
+    // 3 - Vader and Luke on gantry
+    setProgress(3);
+    show(GANTRY1);
+    await sleep(3000);
+    if (aborted) return;
+
+    // 4 - Lightsaber clash aftermath
+    setProgress(4);
+    show(CLASH);
+    await sleep(3000);
+    if (aborted) return;
+
+    // 5 - Luke crawls to edge
+    setProgress(5);
+    show(CRAWL);
+    await sleep(2500);
+    if (aborted) return;
+
+    // 6 - Vader close up + dialogue
+    setProgress(6);
+    await typewriter(VADER_CLOSE, "VADER: There is no escape. Don't make me destroy you.", 40);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 7 - Luke hanging
+    setProgress(7);
+    await typewriter(LUKE_HANG, "VADER: You do not yet realize your importance.", 40);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 8 - Vader extends hand
+    setProgress(8);
+    await typewriter(VADER_HAND, "VADER: Join me, and I will complete your training.", 40);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 9 - Luke recoils
+    setProgress(9);
+    await typewriter(LUKE_RECOIL, "LUKE: I'll never join you!", 50);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 10 - Vader dramatic pause
+    setProgress(10);
+    await typewriter(VADER_CLOSE, "VADER: If only you knew the power of the Dark Side.", 40);
+    await sleep(2000);
+    if (aborted) return;
+
+    // 11 - Luke defiant
+    setProgress(11);
+    await typewriter(LUKE_RECOIL, "LUKE: Obi-Wan told me enough! He told me you killed my father!", 40);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 12 - Dramatic flicker
+    setProgress(12);
+    await flicker(VADER_CLOSE, 3, 200);
+    if (aborted) return;
+
+    // ====== THE BIG MOMENT ======
+
+    // 13 - The reveal frame
+    setProgress(13);
+    screen.classList.add('bright');
+    show(REVEAL);
+    await sleep(1000);
+    if (aborted) return;
+
+    // 14 - The line, slowly
+    setProgress(14);
+    dialogue.textContent = '';
+    const prefix = "VADER: No. ";
+    for (let i = 0; i < prefix.length; i++) {
+      if (aborted) return;
+      dialogue.textContent = prefix.slice(0, i + 1);
+      await sleep(80);
+    }
+    await sleep(800);
+
+    const theLine = "I am your father.";
+    for (let i = 0; i < theLine.length; i++) {
+      if (aborted) return;
+      dialogue.textContent = prefix + theLine.slice(0, i + 1);
+      await sleep(150);
+    }
+    await sleep(3000);
+    screen.classList.remove('bright');
+    if (aborted) return;
+
+    // ====== LUKE'S REACTION ======
+
+    // 15 - Flicker
+    setProgress(15);
+    await flicker(LUKE_RECOIL, 2, 150);
+    if (aborted) return;
+
+    // 16 - Luke: No...
+    setProgress(16);
+    await typewriter(LUKE_SCREAM, "LUKE: No... no... that's not true...", 60);
+    await sleep(1000);
+    if (aborted) return;
+
+    // 17 - IMPOSSIBLE
+    setProgress(17);
+    await typewriter(LUKE_SCREAM, "LUKE: THAT'S IMPOSSIBLE!", 50);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 18 - Vader extends hand again
+    setProgress(18);
+    await typewriter(VADER_HAND, "VADER: Search your feelings, you know it to be true!", 40);
+    await sleep(2000);
+    if (aborted) return;
+
+    // 19 - NOOOOO
+    setProgress(19);
+    screen.textContent = LUKE_SCREAM;
+    dialogue.textContent = '';
+    await sleep(300);
+    const nooo = "NOOOOOOOOOOOOOO!";
+    for (let i = 0; i < nooo.length; i++) {
+      if (aborted) return;
+      dialogue.textContent = "LUKE: " + nooo.slice(0, i + 1);
+      await sleep(100 + i * 10);
+    }
+    await sleep(2000);
+    if (aborted) return;
+
+    // 20 - Luke lets go + fall sequence
+    setProgress(20);
+    show(LUKE_LET_GO);
+    await sleep(1500);
+    if (aborted) return;
+
+    show(FALL1);
+    await sleep(1000);
+    if (aborted) return;
+
+    show(FALL2);
+    await sleep(1000);
+    if (aborted) return;
+
+    // 21 - Falling into clouds
+    setProgress(21);
+    show(FALL3);
+    await sleep(1500);
+    if (aborted) return;
+
+    // 22 - End card
+    setProgress(22);
+    show(END_CARD);
+    await sleep(5000);
+
+  } finally {
+    playing = false;
+    playBtn.textContent = '▶ Play';
+    playBtn.classList.remove('active');
+    skipBtn.style.display = 'none';
+    replayBtn.style.display = '';
+  }
+}
+
+function togglePlay() {
+  if (playing) {
+    aborted = true;
+    clearTimeout(animationHandle);
+    playing = false;
+    playBtn.textContent = '▶ Play';
+    playBtn.classList.remove('active');
+    replayBtn.style.display = '';
+    skipBtn.style.display = 'none';
+  } else {
+    runScene();
+  }
+}
+
+function skipToReveal() {
+  if (!playing) return;
+  aborted = true;
+  clearTimeout(animationHandle);
+  playing = false;
+
+  // Jump to the reveal
+  setTimeout(async () => {
+    playing = true;
+    aborted = false;
+    playBtn.textContent = '⏸ Pause';
+    playBtn.classList.add('active');
+
+    try {
+      setProgress(12);
+      await flicker(VADER_CLOSE, 3, 200);
+      if (aborted) return;
+
+      setProgress(13);
+      screen.classList.add('bright');
+      show(REVEAL);
+      await sleep(1000);
+      if (aborted) return;
+
+      setProgress(14);
+      dialogue.textContent = '';
+      const prefix = "VADER: No. ";
+      for (let i = 0; i < prefix.length; i++) {
+        if (aborted) return;
+        dialogue.textContent = prefix.slice(0, i + 1);
+        await sleep(80);
+      }
+      await sleep(800);
+
+      const theLine = "I am your father.";
+      for (let i = 0; i < theLine.length; i++) {
+        if (aborted) return;
+        dialogue.textContent = prefix + theLine.slice(0, i + 1);
+        await sleep(150);
+      }
+      await sleep(3000);
+      screen.classList.remove('bright');
+      if (aborted) return;
+
+      setProgress(15);
+      await flicker(LUKE_RECOIL, 2, 150);
+      if (aborted) return;
+
+      setProgress(16);
+      await typewriter(LUKE_SCREAM, "LUKE: No... no... that's not true...", 60);
+      await sleep(1000);
+      if (aborted) return;
+
+      setProgress(17);
+      await typewriter(LUKE_SCREAM, "LUKE: THAT'S IMPOSSIBLE!", 50);
+      await sleep(1500);
+      if (aborted) return;
+
+      setProgress(18);
+      await typewriter(VADER_HAND, "VADER: Search your feelings, you know it to be true!", 40);
+      await sleep(2000);
+      if (aborted) return;
+
+      setProgress(19);
+      screen.textContent = LUKE_SCREAM;
+      dialogue.textContent = '';
+      await sleep(300);
+      const nooo = "NOOOOOOOOOOOOOO!";
+      for (let i = 0; i < nooo.length; i++) {
+        if (aborted) return;
+        dialogue.textContent = "LUKE: " + nooo.slice(0, i + 1);
+        await sleep(100 + i * 10);
+      }
+      await sleep(2000);
+      if (aborted) return;
+
+      setProgress(20);
+      show(LUKE_LET_GO);
+      await sleep(1500);
+      if (aborted) return;
+      show(FALL1);
+      await sleep(1000);
+      if (aborted) return;
+      show(FALL2);
+      await sleep(1000);
+      if (aborted) return;
+
+      setProgress(21);
+      show(FALL3);
+      await sleep(1500);
+      if (aborted) return;
+
+      setProgress(22);
+      show(END_CARD);
+      await sleep(5000);
+
+    } finally {
+      playing = false;
+      playBtn.textContent = '▶ Play';
+      playBtn.classList.remove('active');
+      skipBtn.style.display = 'none';
+      replayBtn.style.display = '';
+    }
+  }, 50);
+}
+
+function replay() {
+  replayBtn.style.display = 'none';
+  setProgress(0);
+  runScene();
+}
+
+// Show title card on load
+show(TITLE);
+</script>
+
+</body>
+</html>
